@@ -7,7 +7,19 @@
 //
 
 #import "RAViewController.h"
+#import "RAToast.h"
 
 @implementation RAViewController
+
+- (void)viewDidLoad
+{
+	[super viewDidLoad];
+
+	[[self view] setBackgroundColor:[UIColor whiteColor]];
+
+	[[RAToast makeText:@"Toast text 1"] show];
+	[[RAToast makeText:@"Toast text 2"] show];
+	[[RAToast makeText:@"Toast text 3"] show];
+}
 
 @end
