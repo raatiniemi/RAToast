@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RAToast.h"
 
+/**
+ Sample view controller for displaying toast messages.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 @interface RAViewController : UIViewController
 
 @end

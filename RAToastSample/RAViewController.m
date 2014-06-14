@@ -7,7 +7,6 @@
 //
 
 #import "RAViewController.h"
-#import "RAToast.h"
 
 @implementation RAViewController
 
@@ -15,11 +14,15 @@
 {
 	[super viewDidLoad];
 
+	// Adjust the background color, since the background color of the toast box
+	// are semi-transparent black.
 	[[self view] setBackgroundColor:[UIColor whiteColor]];
 
-	[[RAToast makeText:@"Toast text 1"] show];
-	[[RAToast makeText:@"Toast text 2"] show];
-	[[RAToast makeText:@"Toast text 3"] show];
+	// Display three toast messages.
+	// TODO: Add example with different duration and gravity.
+	[[RAToast makeText:@"Toast #1"] show];
+	[[RAToast makeText:@"Toast #2"] show];
+	[[RAToast makeText:@"Toast #3"] show];
 }
 
 @end
