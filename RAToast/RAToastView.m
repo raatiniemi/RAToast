@@ -8,6 +8,11 @@
 
 #import "RAToastView.h"
 
+/**
+ Handles everything related to the toast view.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 @interface RAToastView () {
 @private
 	RAToastGravity _gravity;
@@ -15,15 +20,35 @@
 	UILabel *_textLabel;
 }
 
+/// Gravity of the toast, i.e. the position.
 @property RAToastGravity gravity;
 
+/// View for the toast text message.
 @property UILabel *textLabel;
+
+#pragma mark - Layout
+
+/**
+ Setup the background view, i.e. the toast container.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
+- (void)setupBackgroundView;
+
+/**
+ Setup the text label, i.e. the view for displaying the actual toast message.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
+- (void)setupTextLabel;
 
 @end
 
 @implementation RAToastView
 
 @synthesize gravity = _gravity;
+
+#pragma mark - Initialization
 
 - (instancetype)initWithGravity:(RAToastGravity)gravity
 {
@@ -51,6 +76,8 @@
 {
 	return [self initWithGravity:RAToastGravityBottom];
 }
+
+#pragma mark - Layout
 
 - (void)setupBackgroundView
 {
@@ -132,6 +159,8 @@
 {
 	return [[self textLabel] text];
 }
+
+#pragma mark - Animation
 
 + (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion
 {
