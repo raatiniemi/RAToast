@@ -76,6 +76,11 @@
 		[view updateView];
 		[view setAlpha:0.0];
 
+		// TODO: Migrate the animation to the view, with support for custom animations.
+		// The animation have to be supplied with a callback-block that will
+		// change the value of the operation status to finished, otherwise the
+		// next operation won't execute.
+
 		[[[UIApplication sharedApplication] keyWindow] addSubview:view];
 
 		[RAToastView animateWithAnimations:^{
