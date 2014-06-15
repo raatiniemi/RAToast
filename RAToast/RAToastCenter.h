@@ -10,12 +10,44 @@
 
 @class RAToastOperation;
 
+/**
+ Handles the queuing for the toast operations.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 @interface RAToastCenter : NSObject
 
+#pragma mark - Initialization
+
+/**
+ Retrieves the default toast center.
+
+ @return Default toast center.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 + (instancetype)defaultCenter;
 
-- (void)deviceOrientationDidChange:(id)sender;
+#pragma mark - Queue
 
+/**
+ Add a toast to the queue.
+
+ @param toast Toast that'll be added to the queue.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 - (void)addToast:(RAToastOperation *)toast;
+
+#pragma mark - Observer
+
+/**
+ Handles device orientation change for the visible toast.
+
+ @param sender Object that sent the device orientation change notification.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
+- (void)deviceOrientationDidChange:(id)sender;
 
 @end
