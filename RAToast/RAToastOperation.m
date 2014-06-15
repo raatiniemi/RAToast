@@ -8,18 +8,28 @@
 
 #import "RAToastOperation.h"
 
+#import "RAToast.h"
+#import "RAToastView.h"
+
 #define kStatusKeyReady @"isReady"
 #define kStatusKeyExecuting @"isExecuting"
 #define kStatusKeyFinished @"isFinished"
 
+/**
+ Executes the `RAToast` within the queue, relays the animation to the view.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 @interface RAToastOperation () {
 @private
 	RAToast *_toast;
 	RAToastOperationStatus _status;
 }
 
+/// Toast used with the operation.
 @property RAToast *toast;
 
+/// Status for the toast operation.
 @property RAToastOperationStatus status;
 
 @end
@@ -30,25 +40,28 @@
 
 @synthesize status = _status;
 
+#pragma mark - Initialization
+
 - (instancetype)initWithToast:(RAToast *)toast
 {
-	// TODO: Handle if `toast` is `nil`.
-
 	if ( self = [super init] ) {
-		[self setToast:toast];
+		// Verify that the given instance is valid.
+		if ( toast && [toast isKindOfClass:[RAToast class]] ) {
+			[self setToast:toast];
 
-		[self willChangeValueForKey:kStatusKeyReady];
-		[self setStatus:RAToastOperationStatusReady];
-		[self didChangeValueForKey:kStatusKeyReady];
+			// The toast have been set and everything seems fine, change status.
+			[self willChangeValueForKey:kStatusKeyReady];
+			[self setStatus:RAToastOperationStatusReady];
+			[self didChangeValueForKey:kStatusKeyReady];
+		} else {
+			// TODO: Handle invalid toast instance.
+		}
 	}
 
 	return self;
 }
 
-- (id)init
-{
-	return [self initWithToast:nil];
-}
+#pragma mark - NSOperation
 
 - (BOOL)isReady
 {
@@ -67,6 +80,7 @@
 
 - (void)main
 {
+	// Toast is about to start executing, change status.
 	[self willChangeValueForKey:kStatusKeyExecuting];
 	[self setStatus:RAToastOperationStatusExecuting];
 	[self didChangeValueForKey:kStatusKeyExecuting];
@@ -89,9 +103,14 @@
 			[RAToastView animateWithDuration:[[self toast] duration] animations:^{
 				[view setAlpha:0.0];
 			} completion:^(BOOL finished) {
+				// Toast have finished, change status.
 				[self willChangeValueForKey:kStatusKeyFinished];
 				[self setStatus:RAToastOperationStatusFinished];
 				[self didChangeValueForKey:kStatusKeyFinished];
+
+				// Remove the view from the window. If the view is not removed
+				// the views will keep stacking with each toast.
+				[view removeFromSuperview];
 			}];
 		}];
 	});
