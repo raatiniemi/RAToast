@@ -38,13 +38,27 @@ NSTimeInterval RAToastTimeIntervalDuration = 2.0;
 
 @synthesize duration = _duration;
 
-+ (instancetype)makeText:(NSString *)text
++ (instancetype)makeText:(NSString *)text gravity:(RAToastGravity)gravity duration:(NSTimeInterval)duration
 {
 	RAToast *toast = [[RAToast alloc] init];
-	[toast setText:text];
-	[toast setDuration:RAToastTimeIntervalDuration];
+	// TODO: Handle gravity and duration.
 
 	return toast;
+}
+
++ (instancetype)makeText:(NSString *)text gravity:(RAToastGravity)gravity
+{
+	return [self makeText:text gravity:gravity duration:RAToastTimeIntervalDuration];
+}
+
++ (instancetype)makeText:(NSString *)text duration:(NSTimeInterval)duration
+{
+	return [self makeText:text gravity:RAToastGravityBottom duration:duration];
+}
+
++ (instancetype)makeText:(NSString *)text
+{
+	return [self makeText:text gravity:RAToastGravityBottom duration:RAToastTimeIntervalDuration];
 }
 
 - (instancetype)initWithView:(RAToastView *)view

@@ -50,6 +50,12 @@ extern NSTimeInterval RAToastTimeIntervalDuration;
 
 @property (nonatomic, readonly) NSString *text;
 
++ (instancetype)makeText:(NSString *)text gravity:(RAToastGravity)gravity duration:(NSTimeInterval)duration;
+
++ (instancetype)makeText:(NSString *)text gravity:(RAToastGravity)gravity;
+
++ (instancetype)makeText:(NSString *)text duration:(NSTimeInterval)duration;
+
 + (instancetype)makeText:(NSString *)text;
 
 - (instancetype)initWithView:(RAToastView *)view;
