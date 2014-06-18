@@ -11,8 +11,13 @@
 #import "RAToast.h"
 #import "RAToastView.h"
 
+/// Status key for ready.
 #define kStatusKeyReady @"isReady"
+
+/// Status key for executing.
 #define kStatusKeyExecuting @"isExecuting"
+
+/// Status key for finished.
 #define kStatusKeyFinished @"isFinished"
 
 /**
@@ -54,7 +59,9 @@
 			[self setStatus:RAToastOperationStatusReady];
 			[self didChangeValueForKey:kStatusKeyReady];
 		} else {
-			// TODO: Handle invalid toast instance.
+			// Invalid instance of `RAToast` have been supplied.
+			[NSException raise:NSInvalidArgumentException
+						format:@"Invalid instance of `RAToast` have been supplied"];
 		}
 	}
 
