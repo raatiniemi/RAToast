@@ -41,6 +41,7 @@ NSTimeInterval RAToastTimeIntervalDuration = 2.0;
 + (instancetype)makeText:(NSString *)text gravity:(RAToastGravity)gravity duration:(NSTimeInterval)duration
 {
 	RAToast *toast = [[RAToast alloc] init];
+	[toast setText:text];
 	// TODO: Handle gravity and duration.
 
 	return toast;
@@ -64,8 +65,9 @@ NSTimeInterval RAToastTimeIntervalDuration = 2.0;
 - (instancetype)initWithView:(RAToastView *)view
 {
 	if ( self = [super init] ) {
-		[self setOperation:[[RAToastOperation alloc] initWithToast:self]];
 		[self setView:view];
+
+		[self setOperation:[[RAToastOperation alloc] initWithToast:self]];
 	}
 
 	return self;
