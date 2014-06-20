@@ -7,6 +7,7 @@
 //
 
 #import "RAToastCenter.h"
+
 #import "RAToastOperation.h"
 
 /**
@@ -57,8 +58,6 @@ static RAToastCenter *_defaultCenter;
 		// Only one toast can be visible at any given time. With multiple toast we can
 		// easily clutter the GUI, especially if the toasts uses different gravities.
 		[[self queue] setMaxConcurrentOperationCount:1];
-
-		// TODO: Hook up notification for device orientation did change.
 	}
 
 	return self;
@@ -69,15 +68,6 @@ static RAToastCenter *_defaultCenter;
 - (void)addToast:(RAToastOperation *)toast
 {
 	[[self queue] addOperation:toast];
-}
-
-#pragma mark - Observer
-
-- (void)deviceOrientationDidChange:(id)sender
-{
-	if ( [[self queue] operationCount] > 0 ) {
-		// TODO: Update the toast view for the first operation.
-	}
 }
 
 @end

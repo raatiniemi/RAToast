@@ -56,10 +56,22 @@
 	if ( self = [super initWithFrame:CGRectZero] ) {
 		[self setToast:toast];
 
+		// Configure the view and subviews.
 		[self setupView];
+
+		// Hook up the notification for device orientation changes.
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 	}
 
 	return self;
+}
+
+#pragma mark - Orientation
+
+- (void)deviceOrientationDidChange:(id)sender
+{
+	// TODO: Handle the orientation correctly, with toast rotate, etc.
+	[self updateView];
 }
 
 #pragma mark - Layout

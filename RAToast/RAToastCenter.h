@@ -39,15 +39,4 @@
  */
 - (void)addToast:(RAToastOperation *)toast;
 
-#pragma mark - Observer
-
-/**
- Handles device orientation change for the visible toast.
-
- @param sender Object that sent the device orientation change notification.
-
- @author Tobias Raatiniemi <raatiniemi@gmail.com>
- */
-- (void)deviceOrientationDidChange:(id)sender;
-
 @end

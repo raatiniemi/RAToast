@@ -34,6 +34,17 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder __unavailable;
 
+#pragma mark - Orientation
+
+/**
+ Handles the device orientation changes.
+
+ @param sender Object that sent the device orientation change notification.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
+- (void)deviceOrientationDidChange:(id)sender;
+
 #pragma mark - Layout
 
 /**
