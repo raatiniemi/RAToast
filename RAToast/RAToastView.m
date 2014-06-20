@@ -124,7 +124,7 @@
 	CGFloat height = (size.height + (text.origin.y * 2.0));
 
 	// Calculate the X position for a visually centered box.
-	x = (maxWidth / 2.0) - (width / 2.0) + horizontal;
+	x = round(((maxWidth - width) / 2.0) + horizontal);
 
 	// Based on the gravity the Y position calculation is different.
 	switch ( [[self toast] gravity] ) {
@@ -133,7 +133,7 @@
 			NSLog(@"Gravity have not yet been implemented, fallback to `RAToastGravityBottom`");
 		case RAToastGravityBottom:
 		default:
-			y = maxHeight - height + vertical;
+			y = round(maxHeight - height + vertical);
 			break;
 	}
 
