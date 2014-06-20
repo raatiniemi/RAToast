@@ -12,6 +12,15 @@
 #import "RAToastOperation.h"
 #import "RAToastView.h"
 
+const RAToastDuration RAToastDurationShort = 1.0;
+const RAToastDuration RAToastDurationNormal = 2.0;
+const RAToastDuration RAToastDurationLong = 3.0;
+
+/**
+ Handles the toast configuration and relay actions.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 @interface RAToast () {
 @private
 	RAToastOperation *_operation;
@@ -60,7 +69,7 @@
 	return self;
 }
 
-+ (instancetype)makeText:(NSString *)text duration:(NSTimeInterval)duration
++ (instancetype)makeText:(NSString *)text duration:(RAToastDuration)duration
 {
 	RAToast *toast = [[self alloc] initWithText:text];
 	[toast setDuration:duration];
@@ -71,7 +80,7 @@
 
 + (instancetype)makeText:(NSString *)text
 {
-	return [self makeText:text duration:2.0];
+	return [self makeText:text duration:RAToastDurationNormal];
 }
 
 #pragma mark - Show

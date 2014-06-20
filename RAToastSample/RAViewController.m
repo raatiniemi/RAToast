@@ -18,22 +18,20 @@
 	// are semi-transparent black.
 	[[self view] setBackgroundColor:[UIColor whiteColor]];
 
-	// TODO: Add example with different duration.
-
 	// Display toast attached to the top of the screen.
-	RAToast *top = [RAToast makeText:@"Top"];
+	RAToast *top = [RAToast makeText:@"Top with long duration"];
+	[top setDuration:RAToastDurationLong];
 	[top setGravity:RAToastGravityTop];
 	[top show];
 
 	// Display toast at a centered position.
-	RAToast *center = [RAToast makeText:@"Center"];
+	RAToast *center = [RAToast makeText:@"Center with normal duration"];
 	[center setGravity:RAToastGravityCenter];
 	[center show];
 
 	// Display toast attached to the bottom of the screen.
-	RAToast *bottom = [RAToast makeText:@"Bottom"];
-	[bottom setGravity:RAToastGravityBottom];
-	[bottom show];
+	[[RAToast makeText:@"Bottom with short duration"
+			  duration:RAToastDurationShort] show];
 }
 
 @end

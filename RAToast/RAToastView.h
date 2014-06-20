@@ -28,11 +28,11 @@
  */
 - (instancetype)initWithToast:(RAToast *)toast;
 
+- (id)init __unavailable;
+
 - (id)initWithFrame:(CGRect)frame __unavailable;
 
 - (id)initWithCoder:(NSCoder *)aDecoder __unavailable;
-
-- (id)init __unavailable;
 
 #pragma mark - Layout
 

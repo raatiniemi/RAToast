@@ -25,6 +25,23 @@ typedef NS_ENUM(short int, RAToastGravity) {
 	RAToastGravityBottom
 };
 
+/// Type for the toast duration in seconds.
+typedef NSTimeInterval RAToastDuration;
+
+/// Short duration (1 second) for displaying a toast.
+extern const RAToastDuration RAToastDurationShort;
+
+/// Normal duration (2 seconds) for displaying a toast.
+extern const RAToastDuration RAToastDurationNormal;
+
+/// Long duration (3 seconds) for displaying a toast.
+extern const RAToastDuration RAToastDurationLong;
+
+/**
+ Handles the toast configuration and relay actions.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 @interface RAToast : NSObject {
 @protected
 	NSString *_text;
@@ -38,7 +55,7 @@ typedef NS_ENUM(short int, RAToastGravity) {
 @property (readonly) NSString *text;
 
 /// Duration in seconds to display the toast.
-@property NSTimeInterval duration;
+@property RAToastDuration duration;
 
 /// Gravity to be used with the toast, i.e. position.
 @property RAToastGravity gravity;
@@ -66,7 +83,7 @@ typedef NS_ENUM(short int, RAToastGravity) {
 
  @author Tobias Raatiniemi <raatiniemi@gmail.com>
  */
-+ (instancetype)makeText:(NSString *)text duration:(NSTimeInterval)duration;
++ (instancetype)makeText:(NSString *)text duration:(RAToastDuration)duration;
 
 /**
  Make toast with text.
