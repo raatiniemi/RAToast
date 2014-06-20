@@ -130,6 +130,11 @@
 	switch ( [[self toast] gravity] ) {
 		case RAToastGravityTop:
 		case RAToastGravityCenter:
+			// TODO: Implement support for additional gravities.
+			// To implement support for top and center gravity the toast have to
+			// be aware of the surrounding views.
+			// E.g. what type of `UIEdgeRect` is being used, does the view
+			// controller have a `UINavigationController`.
 			NSLog(@"Gravity have not yet been implemented, fallback to `RAToastGravityBottom`");
 		case RAToastGravityBottom:
 		default:

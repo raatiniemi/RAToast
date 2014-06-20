@@ -18,11 +18,22 @@
 	// are semi-transparent black.
 	[[self view] setBackgroundColor:[UIColor whiteColor]];
 
-	// Display three toast messages.
-	// TODO: Add example with different duration and gravity.
-	[[RAToast makeText:@"Toast #1"] show];
-	[[RAToast makeText:@"Toast #2"] show];
-	[[RAToast makeText:@"Toast #3"] show];
+	// TODO: Add example with different duration.
+
+	// Display toast attached to the top of the screen.
+	RAToast *top = [RAToast makeText:@"Top"];
+	[top setGravity:RAToastGravityTop];
+	[top show];
+
+	// Display toast at a centered position.
+	RAToast *center = [RAToast makeText:@"Center"];
+	[center setGravity:RAToastGravityCenter];
+	[center show];
+
+	// Display toast attached to the bottom of the screen.
+	RAToast *bottom = [RAToast makeText:@"Bottom"];
+	[bottom setGravity:RAToastGravityBottom];
+	[bottom show];
 }
 
 @end
