@@ -8,58 +8,88 @@
 
 #import <Foundation/Foundation.h>
 
-/**
- RAToast *toast = [RAToast makeText:@""];
- [toast setGravity:RAToastGravityBottom];
- [toast setDuration: ...];
- [toast setDelay: ...];
- [toast show];
-
- The RAToast uses internally NSOperation (RAToastOperation) and NSOperationQueue
- (RAToastOperationQueue) to handle the message queue.
-
- When the user taps and holds on a toast, the operation should pause. If the
- user either swipes to the toast to either of the sides or simply taps and
- releases the toast should disapear (i.e. the user have acknowledge the toast
- and want to dismiss it).
-
- Custom views should be supported, e.g. views with icons, buttons, etc. As the
- "Undo" toast in Gmail on Android (when removing mail). However, this should be
- an upcoming feature, not really necessary at this point.
-
- Default supplied views should only be with square and slightly rounded cornes.
- 
- TODO: Add support for custom animations, preAnimation: postAnimation:
- */
-
 @class RAToastView;
 
+/// TODO: Replace with bit mask for better precision.
+/// E.g. setGravity(RAToastGravityTop|RAToastGravityLeft).
+
+/// Available toast gravity options, e.g. position.
 typedef NS_ENUM(short int, RAToastGravity) {
+	/// Position the toast against the top of the screen.
 	RAToastGravityTop,
+
+	/// Position the toast at the center of the screen.
 	RAToastGravityCenter,
+
+	/// Position the toast against the bottom of the screen.
 	RAToastGravityBottom
 };
 
-extern NSTimeInterval RAToastTimeIntervalDuration;
+@interface RAToast : NSObject {
+@protected
+	NSString *_text;
+	NSTimeInterval _duration;
+	RAToastGravity _gravity;
 
-@interface RAToast : NSObject
+	RAToastView *_view;
+}
 
-@property (readonly) RAToastView *view;
+/// Text to be displayed with the toast.
+@property (readonly) NSString *text;
 
+/// Duration in seconds to display the toast.
 @property NSTimeInterval duration;
 
-@property (nonatomic, readonly) NSString *text;
+/// Gravity to be used with the toast, i.e. position.
+@property RAToastGravity gravity;
 
-+ (instancetype)makeText:(NSString *)text gravity:(RAToastGravity)gravity duration:(NSTimeInterval)duration;
+/// View to be used with the toast.
+@property RAToastView *view;
 
-+ (instancetype)makeText:(NSString *)text gravity:(RAToastGravity)gravity;
+#pragma mark - Initialization
 
+/**
+ The `init`-method have been disabled, either of the `makeText:duration:` or
+ `makeText:` methods should be used.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
+- (id)init __unavailable;
+
+/**
+ Make toast with text and duration.
+
+ @param text Text to display with the toast.
+ @param duration Duration to show the toast.
+
+ @return Initialized toast ready to be displayed.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 + (instancetype)makeText:(NSString *)text duration:(NSTimeInterval)duration;
 
+/**
+ Make toast with text.
+
+ @param text Text to display with the toast.
+
+ @return Initialized toast ready to be displayed.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+
+ @note
+ The `makeText:`-method will forward the call to the `makeText:duration:`-method
+ with the default toast duration.
+ */
 + (instancetype)makeText:(NSString *)text;
 
-- (instancetype)initWithView:(RAToastView *)view;
+#pragma mark - Show
 
+/**
+ Display the toast at the given position.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 - (void)show;
 
 @end

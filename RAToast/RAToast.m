@@ -11,22 +11,27 @@
 #import "RAToastOperation.h"
 #import "RAToastView.h"
 
-NSTimeInterval RAToastTimeIntervalDuration = 2.0;
-
 @interface RAToast () {
 @private
 	RAToastOperation *_operation;
-
-	RAToastView *_view;
-
-	NSTimeInterval _duration;
 }
 
+/// Operation to be used when queuing the toast.
 @property RAToastOperation *operation;
 
-@property (readwrite) RAToastView *view;
-
+/// Text to be displayed with the toast.
 @property (readwrite) NSString *text;
+
+#pragma mark - Initialization
+
+/**
+ Initialize the toast with the text.
+
+ @param text Text to display with the toast.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
+- (instancetype)initWithText:(NSString *)text;
 
 @end
 
@@ -34,62 +39,51 @@ NSTimeInterval RAToastTimeIntervalDuration = 2.0;
 
 @synthesize operation = _operation;
 
-@synthesize view = _view;
+@synthesize text = _text;
 
 @synthesize duration = _duration;
 
-+ (instancetype)makeText:(NSString *)text gravity:(RAToastGravity)gravity duration:(NSTimeInterval)duration
-{
-	RAToast *toast = [[RAToast alloc] init];
-	[toast setText:text];
-	// TODO: Handle gravity and duration.
+@synthesize gravity = _gravity;
 
-	return toast;
-}
+#pragma mark - Initialization
 
-+ (instancetype)makeText:(NSString *)text gravity:(RAToastGravity)gravity
-{
-	return [self makeText:text gravity:gravity duration:RAToastTimeIntervalDuration];
-}
-
-+ (instancetype)makeText:(NSString *)text duration:(NSTimeInterval)duration
-{
-	return [self makeText:text gravity:RAToastGravityBottom duration:duration];
-}
-
-+ (instancetype)makeText:(NSString *)text
-{
-	return [self makeText:text gravity:RAToastGravityBottom duration:RAToastTimeIntervalDuration];
-}
-
-- (instancetype)initWithView:(RAToastView *)view
+- (instancetype)initWithText:(NSString *)text
 {
 	if ( self = [super init] ) {
-		[self setView:view];
+		[self setText:text];
 
+		// Initialize the operation with the toast.
 		[self setOperation:[[RAToastOperation alloc] initWithToast:self]];
 	}
 
 	return self;
 }
 
-- (id)init
++ (instancetype)makeText:(NSString *)text duration:(NSTimeInterval)duration
 {
-	return self = [self initWithView:[[RAToastView alloc] init]];
+	RAToast *toast = [[self alloc] initWithText:text];
+	[toast setDuration:duration];
+	[toast setGravity:RAToastGravityBottom];
+
+	return toast;
 }
 
-- (void)setText:(NSString *)text
++ (instancetype)makeText:(NSString *)text
 {
-	[[self view] setText:text];
+	return [self makeText:text duration:2.0];
 }
 
-- (NSString *)text
-{
-	return [[self view] text];
-}
+#pragma mark - Show
 
 - (void)show
 {
+	// If no view have been defined we have to initialize the default view.
+	if ( ![self view] ) {
+		// Initialize the view with the toast.
+		[self setView:[[RAToastView alloc] initWithToast:self]];
+	}
+
+	// Add the toast operation to the toast queue.
 	[[RAToastCenter defaultCenter] addToast:[self operation]];
 }
 

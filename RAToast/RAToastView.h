@@ -16,19 +16,22 @@
  */
 @interface RAToastView : UIView
 
-/// Text to be displayed with the toast.
-@property (nonatomic) NSString *text;
-
 #pragma mark - Initialization
 
 /**
- Initialize the toast view with the gravity, i.e. the position of the toast.
+ Initialize the view with the toast.
 
- @param gravity Gravity of the toast.
+ @param toast Toast to be used with the view.
 
  @author Tobias Raatiniemi <raatiniemi@gmail.com>
  */
-- (instancetype)initWithGravity:(RAToastGravity)gravity;
+- (instancetype)initWithToast:(RAToast *)toast;
+
+- (id)initWithFrame:(CGRect)frame __unavailable;
+
+- (id)initWithCoder:(NSCoder *)aDecoder __unavailable;
+
+- (id)init __unavailable;
 
 #pragma mark - Layout
 

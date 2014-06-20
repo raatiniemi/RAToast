@@ -15,13 +15,12 @@
  */
 @interface RAToastView () {
 @private
-	RAToastGravity _gravity;
+	RAToast *_toast;
 
 	UILabel *_textLabel;
 }
 
-/// Gravity of the toast, i.e. the position.
-@property RAToastGravity gravity;
+@property RAToast *toast;
 
 /// View for the toast text message.
 @property UILabel *textLabel;
@@ -46,35 +45,20 @@
 
 @implementation RAToastView
 
-@synthesize gravity = _gravity;
+@synthesize toast = _toast;
 
 #pragma mark - Initialization
 
-- (instancetype)initWithGravity:(RAToastGravity)gravity
+- (instancetype)initWithToast:(RAToast *)toast
 {
 	if ( self = [super initWithFrame:CGRectZero] ) {
-		[self setGravity:gravity];
+		[self setToast:toast];
 
 		[self setupBackgroundView];
 		[self setupTextLabel];
 	}
 
 	return self;
-}
-
-- (id)initWithFrame:(CGRect)frame
-{
-	return [self initWithGravity:RAToastGravityBottom];
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-	return [self initWithGravity:RAToastGravityBottom];
-}
-
-- (id)init
-{
-	return [self initWithGravity:RAToastGravityBottom];
 }
 
 #pragma mark - Layout
@@ -92,6 +76,7 @@
 	[[self textLabel] setTextColor:[UIColor whiteColor]];
 	[[self textLabel] setFont:[UIFont systemFontOfSize:14.0]];
 	[[self textLabel] setNumberOfLines:0];
+	[[self textLabel] setText:[[self toast] text]];
 
 	[self addSubview:[self textLabel]];
 }
@@ -135,7 +120,7 @@
 	x = (maxWidth / 2.0) - (width / 2.0) + horizontal;
 
 	// Based on the gravity the Y position calculation is different.
-	switch ( [self gravity] ) {
+	switch ( [[self toast] gravity] ) {
 		case RAToastGravityTop:
 		case RAToastGravityCenter:
 			NSLog(@"Gravity have not yet been implemented, fallback to `RAToastGravityBottom`");
