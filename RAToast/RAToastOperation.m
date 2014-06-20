@@ -104,21 +104,25 @@
 
 		[[[UIApplication sharedApplication] keyWindow] addSubview:view];
 
-		[RAToastView animateWithAnimations:^{
+		[UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
 			[view setAlpha:1.0];
 		} completion:^(BOOL finished) {
-			[RAToastView animateWithDuration:[[self toast] duration] animations:^{
-				[view setAlpha:0.0];
-			} completion:^(BOOL finished) {
-				// Toast have finished, change status.
-				[self willChangeValueForKey:kStatusKeyFinished];
-				[self setStatus:RAToastOperationStatusFinished];
-				[self didChangeValueForKey:kStatusKeyFinished];
+			if ( finished ) {
+				[UIView animateWithDuration:1.0 delay:[[self toast] duration] options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+					[view setAlpha:0.0];
+				} completion:^(BOOL finished) {
+					if ( finished ) {
+						// Toast have finished, change status.
+						[self willChangeValueForKey:kStatusKeyFinished];
+						[self setStatus:RAToastOperationStatusFinished];
+						[self didChangeValueForKey:kStatusKeyFinished];
 
-				// Remove the view from the window. If the view is not removed
-				// the views will keep stacking with each toast.
-				[view removeFromSuperview];
-			}];
+						// Remove the view from the window. If the view is not removed
+						// the views will keep stacking with each toast.
+						[view removeFromSuperview];
+					}
+				}];
+			}
 		}];
 	});
 }

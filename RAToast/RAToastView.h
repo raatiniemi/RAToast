@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RAToast.h"
+
+@class RAToast;
 
 /**
  Handles everything related to the toast view.
@@ -36,16 +37,17 @@
 #pragma mark - Layout
 
 /**
+ Setup the view and subviews.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
+- (void)setupView;
+
+/**
  Calculates the position and the size of the related views.
 
  @author Tobias Raatiniemi <raatiniemi@gmail.com>
  */
 - (void)updateView;
-
-#pragma mark - Animation
-
-+ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion;
-
-+ (void)animateWithAnimations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion;
 
 @end

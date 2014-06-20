@@ -8,6 +8,8 @@
 
 #import "RAToastView.h"
 
+#import "RAToast.h"
+
 /**
  Handles everything related to the toast view.
 
@@ -54,14 +56,19 @@
 	if ( self = [super initWithFrame:CGRectZero] ) {
 		[self setToast:toast];
 
-		[self setupBackgroundView];
-		[self setupTextLabel];
+		[self setupView];
 	}
 
 	return self;
 }
 
 #pragma mark - Layout
+
+- (void)setupView
+{
+	[self setupBackgroundView];
+	[self setupTextLabel];
+}
 
 - (void)setupBackgroundView
 {
@@ -133,28 +140,6 @@
 	// Set the calculated position and size for the toast.
 	CGRect frame = CGRectMake(x, y, width, height);
 	[self setFrame:frame];
-}
-
-- (void)setText:(NSString *)text
-{
-	[[self textLabel] setText:text];
-}
-
-- (NSString *)text
-{
-	return [[self textLabel] text];
-}
-
-#pragma mark - Animation
-
-+ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion
-{
-	[self animateWithDuration:1.0 delay:duration options:UIViewAnimationOptionBeginFromCurrentState animations:animations completion:completion];
-}
-
-+ (void)animateWithAnimations:(void (^)(void))animations completion:(void (^)(BOOL finished))completion
-{
-	[self animateWithDuration:0.0 animations:animations completion:completion];
 }
 
 @end
