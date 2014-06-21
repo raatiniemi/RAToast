@@ -58,6 +58,12 @@ static RAToastCenter *_defaultCenter;
 		// Only one toast can be visible at any given time. With multiple toast we can
 		// easily clutter the GUI, especially if the toasts uses different gravities.
 		[[self queue] setMaxConcurrentOperationCount:1];
+
+		// Hook up the device orientation change notification. The notification first have
+		// to be removed since we don't want the notifications to stack with each center.
+		[[NSNotificationCenter defaultCenter] removeObserver:self];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:)
+													 name:UIDeviceOrientationDidChangeNotification object:nil];
 	}
 
 	return self;
@@ -68,6 +74,34 @@ static RAToastCenter *_defaultCenter;
 - (void)addToast:(RAToastOperation *)toast
 {
 	[[self queue] addOperation:toast];
+}
+
+#pragma mark - Orientation
+
+- (void)deviceOrientationDidChange:(id)sender
+{
+	// Check that we have toast operations available, no need to relay the
+	// orientation change if no operations are active.
+	if ( [[self queue] operationCount] > 0 ) {
+		// Retrieve the first operation, i.e. the one that is active now.
+		RAToastOperation *operation = [[[self queue] operations] firstObject];
+		if ( operation ) {
+			if ( [operation isKindOfClass:[RAToastOperation class]] ) {
+				RAToast *toast = [operation toast];
+				if ( toast ) {
+					// TODO: Send the orientation change to the view.
+				} else {
+					// TODO: Error log, toast is not available.
+				}
+			} else {
+				// TODO: Error log, operation is not correct type.
+			}
+		} else {
+			// TODO: Information log, operation is not available.
+		}
+	} else {
+		// TODO: Information log, operation is not available.
+	}
 }
 
 @end

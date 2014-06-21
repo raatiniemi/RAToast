@@ -32,7 +32,7 @@
 }
 
 /// Toast used with the operation.
-@property RAToast *toast;
+@property (readwrite) RAToast *toast;
 
 /// Status for the toast operation.
 @property RAToastOperationStatus status;
@@ -94,7 +94,6 @@
 
 	dispatch_sync(dispatch_get_main_queue(), ^{
 		RAToastView *view = [[self toast] view];
-		[view updateView];
 		[view setAlpha:0.0];
 
 		// TODO: Migrate the animation to the view, with support for custom animations.

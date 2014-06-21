@@ -32,6 +32,9 @@ typedef NS_ENUM(short int, RAToastOperationStatus) {
  */
 @interface RAToastOperation : NSOperation
 
+/// Toast used with the operation.
+@property (readonly) RAToast *toast;
+
 #pragma mark - Initialization
 
 /**

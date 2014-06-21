@@ -39,4 +39,22 @@
  */
 - (void)addToast:(RAToastOperation *)toast;
 
+#pragma mark - Orientation
+
+/**
+ Handles the device orientation changes.
+
+ @param sender Object that sent the device orientation change notification.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+
+ @note
+ The orientation change have to be relayed from the `RAToastCenter` down to the
+ active toast view. Hooking up the notification from within the `RAToastView`
+ would cause one of two issues. When toast operations are being stacked, the
+ notifications would wither stack aswell, or (if removed) only send the
+ notification to the last operation in the stack.
+ */
+- (void)deviceOrientationDidChange:(id)sender;
+
 @end
