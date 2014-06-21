@@ -132,13 +132,19 @@
 
 	// Calculate the new width and height for the actual view. These calculations have
 	// to include the margin for the text (i.e. the x and y positions the UILabel).
-	CGFloat width = (size.width + (text.origin.x * 2.0));
-	CGFloat height = (size.height + (text.origin.y * 2.0));
+	CGFloat width = (size.width + horizontal);
+	CGFloat height = (size.height + vertical);
 
-	// Calculate the X position for a visually centered box.
-	x = round(((maxWidth - width) / 2.0) + horizontal);
+	// Set the calculated position and size for the toast.
+	CGRect frame = CGRectMake(0.0, 0.0, width, height);
+	[self setFrame:frame];
 
-	// Based on the gravity the Y position calculation is different.
+	// The toast should be centered around a specific point.
+	// Calculate the center of the screen as the x position.
+	CGPoint point = CGPointZero;
+	point.x = round((screen.size.width / 2.0));
+
+	// Based on the gravity, the Y position calculation is different.
 	switch ( [[self toast] gravity] ) {
 		case RAToastGravityTop:
 		case RAToastGravityCenter:
@@ -150,13 +156,12 @@
 			NSLog(@"Gravity have not yet been implemented, fallback to `RAToastGravityBottom`");
 		case RAToastGravityBottom:
 		default:
-			y = round(maxHeight - height + vertical);
+			point.y = round((screen.size.height - (height / 2.0) - horizontal));
 			break;
 	}
 
-	// Set the calculated position and size for the toast.
-	CGRect frame = CGRectMake(x, y, width, height);
-	[self setFrame:frame];
+	// Set the center point for the view.
+	[self setCenter:point];
 }
 
 @end
