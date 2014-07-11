@@ -94,6 +94,7 @@
 
 	dispatch_sync(dispatch_get_main_queue(), ^{
 		RAToastView *view = [[self toast] view];
+		[view updateView];
 		[view setAlpha:0.0];
 
 		// TODO: Migrate the animation to the view, with support for custom animations.
