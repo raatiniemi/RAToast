@@ -104,6 +104,7 @@
 		// next operation won't execute.
 
 		// Retrieve the root view controller.
+		// TODO: Use the `presentedViewController` from the root view controller.
 		UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
 		UIViewController *controllerDelegate = rootViewController;
 
