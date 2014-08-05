@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "RAToastControllerDelegate.h"
+
 @class RAToastView;
 
 /// TODO: Replace with bit mask for better precision.

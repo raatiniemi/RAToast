@@ -65,6 +65,7 @@
 		2D2272F7194C2DBA00CE1224 /* RAToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RAToast.m; sourceTree = "<group>"; };
 		2D2272F9194C2FC900CE1224 /* RAToastOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RAToastOperation.h; sourceTree = "<group>"; };
 		2D2272FA194C2FC900CE1224 /* RAToastOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RAToastOperation.m; sourceTree = "<group>"; };
+		2D23A76519914C1A002A7792 /* RAToastControllerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RAToastControllerDelegate.h; sourceTree = "<group>"; };
 		2D8CEF99194B9DBF0054D3CD /* libRAToast.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRAToast.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D8CEF9C194B9DBF0054D3CD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2D8CEFA0194B9DBF0054D3CD /* RAToast-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RAToast-Prefix.pch"; sourceTree = "<group>"; };
@@ -152,6 +153,22 @@
 			name = Queue;
 			sourceTree = "<group>";
 		};
+		2D23A76419914BF5002A7792 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				2D23A76619914C1F002A7792 /* Controller */,
+			);
+			name = Protocol;
+			sourceTree = "<group>";
+		};
+		2D23A76619914C1F002A7792 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2D23A76519914C1A002A7792 /* RAToastControllerDelegate.h */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
 		2D8CEF8E194B9D990054D3CD = {
 			isa = PBXGroup;
 			children = (
@@ -185,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				2D8CEFC0194B9E7E0054D3CD /* Classes */,
+				2D23A76419914BF5002A7792 /* Protocol */,
 				2D8CEF9F194B9DBF0054D3CD /* Supporting Files */,
 			);
 			path = RAToast;

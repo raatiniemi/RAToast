@@ -10,6 +10,7 @@
 
 #import "RAToast.h"
 #import "RAToastView.h"
+#import "RAToastControllerDelegate.h"
 
 /// Status key for ready.
 #define kStatusKeyReady @"isReady"
@@ -102,7 +103,27 @@
 		// change the value of the operation status to finished, otherwise the
 		// next operation won't execute.
 
-		[[[UIApplication sharedApplication] keyWindow] addSubview:view];
+		// Retrieve the root view controller.
+		UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+		UIViewController *controllerDelegate = rootViewController;
+
+		// There are scenarios where you'd want to use another view controller rather than
+		// the root view controller as the toast delegate. To do this the root view controller
+		// have to conform to the `RAToastControllerDelegate`-protocol and respond to the
+		// `getToastController`-selector, which in turn should provide the delegate controller.
+		if ( [rootViewController conformsToProtocol:@protocol(RAToastControllerDelegate)] ) {
+			if ( [rootViewController respondsToSelector:@selector(getToastController)] ) {
+				// Attempt to retrieve the controller delegate, if none is found
+				// revert to the root view controller.
+				controllerDelegate = [rootViewController performSelector:@selector(getToastController)];
+				if ( !controllerDelegate ) {
+					controllerDelegate = rootViewController;
+				}
+			}
+		}
+
+		// Add the toast-view to the controller delegate.
+		[[controllerDelegate view] addSubview:view];
 
 		[UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
 			[view setAlpha:1.0];
