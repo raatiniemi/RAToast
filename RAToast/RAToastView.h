@@ -10,12 +10,16 @@
 
 @class RAToast;
 
-/**
- Handles everything related to the toast view.
+/// The margin between the screen edges and the toast view.
+extern const NSInteger RAToastViewMargin;
 
- @author Tobias Raatiniemi <raatiniemi@gmail.com>
- */
 @interface RAToastView : UIView
+
+/// The available size for the toast.
+@property (nonatomic, readonly) CGSize availableSize;
+
+/// The calculated size of the toast.
+@property (nonatomic, readonly) CGSize size;
 
 #pragma mark - Initialization
 
@@ -36,18 +40,8 @@
 
 #pragma mark - Layout
 
-/**
- Setup the view and subviews.
-
- @author Tobias Raatiniemi <raatiniemi@gmail.com>
- */
 - (void)setupView;
 
-/**
- Calculates the position and the size of the related views.
-
- @author Tobias Raatiniemi <raatiniemi@gmail.com>
- */
 - (void)updateView;
 
 @end
