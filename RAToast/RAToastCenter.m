@@ -9,6 +9,8 @@
 #import "RAToastCenter.h"
 
 #import "RAToastOperation.h"
+#import "RAToast.h"
+#import "RAToastView.h"
 
 /**
  Instance for the default toast center.
@@ -89,7 +91,7 @@ static RAToastCenter *_defaultCenter;
 			if ( [operation isKindOfClass:[RAToastOperation class]] ) {
 				RAToast *toast = [operation toast];
 				if ( toast ) {
-					// TODO: Send the orientation change to the view.
+					[[toast view] updateView];
 				} else {
 					// TODO: Error log, toast is not available.
 				}

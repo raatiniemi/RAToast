@@ -11,6 +11,7 @@
 #import "RAToastCenter.h"
 #import "RAToastOperation.h"
 #import "RAToastView.h"
+#import "RAToastViewDefault.h"
 
 const RAToastDuration RAToastDurationShort = 1.0;
 const RAToastDuration RAToastDurationNormal = 2.0;
@@ -90,7 +91,7 @@ const RAToastDuration RAToastDurationLong = 3.0;
 	// If no view have been defined we have to initialize the default view.
 	if ( ![self view] ) {
 		// Initialize the view with the toast.
-		[self setView:[[RAToastView alloc] initWithToast:self]];
+		[self setView:[[RAToastViewDefault alloc] initWithToast:self]];
 	}
 
 	// Add the toast operation to the toast queue.

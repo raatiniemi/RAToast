@@ -10,7 +10,7 @@
 
 #import "RAToast.h"
 
-const NSInteger RAToastViewMargin = 20.0;
+const NSInteger RAToastViewMargin = 10.0;
 
 @interface RAToastView () {
 @private
@@ -49,8 +49,26 @@ const NSInteger RAToastViewMargin = 20.0;
 
 - (void)updateView
 {
-	NSLog(@"%@", NSStringFromCGSize([self availableSize]));
-	NSLog(@"%@", NSStringFromCGSize([self size]));
+	CGSize screen = [self availableSize];
+
+	CGSize size = [self size];
+	CGFloat x, y;
+
+	// TODO: Add support for left and right justified toasts.
+
+	if ( screen.width > size.width ) {
+		x = round(((screen.width - size.width) + RAToastViewMargin) / 2.0);
+	} else {
+		x = round(RAToastViewMargin / 2.0);
+	}
+
+	if ( screen.height > size.height ) {
+		y = round(screen.height - size.height);
+	} else {
+		y = round(RAToastViewMargin / 2.0);
+	}
+
+	[self setFrame:CGRectMake(x, y, size.width, size.height)];
 }
 
 - (CGSize)availableSize

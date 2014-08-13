@@ -21,6 +21,7 @@
 		2D2272FB194C2FC900CE1224 /* RAToastOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D2272FA194C2FC900CE1224 /* RAToastOperation.m */; };
 		2D2272FE194C32B700CE1224 /* libRAToast.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D8CEF99194B9DBF0054D3CD /* libRAToast.a */; };
 		2D8CEF9D194B9DBF0054D3CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D8CEF9C194B9DBF0054D3CD /* Foundation.framework */; };
+		2DF271381999458100B07F3F /* RAToastViewDefault.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DF271371999458100B07F3F /* RAToastViewDefault.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,8 @@
 		2D8CEF9C194B9DBF0054D3CD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2D8CEFA0194B9DBF0054D3CD /* RAToast-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RAToast-Prefix.pch"; sourceTree = "<group>"; };
 		2D8CEFAD194B9DBF0054D3CD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		2DF271361999458100B07F3F /* RAToastViewDefault.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RAToastViewDefault.h; sourceTree = "<group>"; };
+		2DF271371999458100B07F3F /* RAToastViewDefault.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RAToastViewDefault.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -233,6 +236,8 @@
 			children = (
 				2D2272F0194C280300CE1224 /* RAToastView.h */,
 				2D2272F1194C280300CE1224 /* RAToastView.m */,
+				2DF271361999458100B07F3F /* RAToastViewDefault.h */,
+				2DF271371999458100B07F3F /* RAToastViewDefault.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -332,6 +337,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D2272FB194C2FC900CE1224 /* RAToastOperation.m in Sources */,
+				2DF271381999458100B07F3F /* RAToastViewDefault.m in Sources */,
 				2D2272F8194C2DBA00CE1224 /* RAToast.m in Sources */,
 				2D2272F2194C280300CE1224 /* RAToastView.m in Sources */,
 				2D2272F5194C2A1700CE1224 /* RAToastCenter.m in Sources */,
