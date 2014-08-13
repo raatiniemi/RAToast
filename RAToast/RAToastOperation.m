@@ -98,10 +98,8 @@
 		[view updateView];
 		[view setAlpha:0.0];
 
-		// TODO: Migrate the animation to the view, with support for custom animations.
-		// The animation have to be supplied with a callback-block that will
-		// change the value of the operation status to finished, otherwise the
-		// next operation won't execute.
+		// TODO: Migrate the controller retrieval to the toast class.
+		// Also, cache the controller since it probably won't change?
 
 		// Retrieve the root view controller.
 		// TODO: Use the `presentedViewController` from the root view controller.
@@ -125,6 +123,11 @@
 
 		// Add the toast-view to the controller delegate.
 		[[controllerDelegate view] addSubview:view];
+
+		// TODO: Migrate the animation to the view, with support for custom animations.
+		// The animation have to be supplied with a callback-block that will
+		// change the value of the operation status to finished, otherwise the
+		// next operation won't execute.
 
 		[UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
 			[view setAlpha:1.0];

@@ -54,6 +54,9 @@ const NSInteger RAToastViewMargin = 10.0;
 	CGSize size = [self size];
 	CGFloat x, y;
 
+	// TODO: Check if the status bar should be included in the calculations.
+	// I.e. via the controller delegate, related to the edgeRect.
+
 	if ( screen.width < size.width ) {
 		x = RAToastViewMargin;
 	} else {
