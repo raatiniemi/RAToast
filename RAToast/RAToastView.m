@@ -54,18 +54,16 @@ const NSInteger RAToastViewMargin = 10.0;
 	CGSize size = [self size];
 	CGFloat x, y;
 
-	// TODO: Add support for left and right justified toasts.
-
-	if ( screen.width > size.width ) {
-		x = round(((screen.width - size.width) + RAToastViewMargin) / 2.0);
+	if ( screen.width < size.width ) {
+		x = RAToastViewMargin;
 	} else {
-		x = round(RAToastViewMargin / 2.0);
+		x = round(((screen.width - size.width) + RAToastViewMargin) / 2.0);
 	}
 
-	if ( screen.height > size.height ) {
-		y = round(screen.height - size.height);
+	if ( screen.height < size.height || [[self toast] gravity] & RAToastGravityTop ) {
+		y = RAToastViewMargin;
 	} else {
-		y = round(RAToastViewMargin / 2.0);
+		y = round(screen.height - size.height);
 	}
 
 	[self setFrame:CGRectMake(x, y, size.width, size.height)];

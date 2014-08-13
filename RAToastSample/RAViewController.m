@@ -24,11 +24,6 @@
 	[top setGravity:RAToastGravityTop];
 	[top show];
 
-	// Display toast at a centered position.
-	RAToast *center = [RAToast makeText:@"Center with normal duration"];
-	[center setGravity:RAToastGravityCenter];
-	[center show];
-
 	// Display toast attached to the bottom of the screen.
 	[[RAToast makeText:@"Bottom with short duration"
 			  duration:RAToastDurationShort] show];

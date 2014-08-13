@@ -12,19 +12,19 @@
 
 @class RAToastView;
 
-/// TODO: Replace with bit mask for better precision.
-/// E.g. setGravity(RAToastGravityTop|RAToastGravityLeft).
-
-/// Available toast gravity options, e.g. position.
-typedef NS_ENUM(short int, RAToastGravity) {
+/// Available toast gravity options, e.g. position on the screen.
+typedef NS_OPTIONS(short int, RAToastGravity) {
 	/// Position the toast against the top of the screen.
-	RAToastGravityTop,
-
-	/// Position the toast at the center of the screen.
-	RAToastGravityCenter,
+	RAToastGravityTop = 1 << 0,
 
 	/// Position the toast against the bottom of the screen.
-	RAToastGravityBottom
+	RAToastGravityBottom = 1 << 1,
+
+	/// Position the toast against the right side of the screen.
+	RAToastGravityRight = 1 << 2,
+
+	/// Position the toast against the left side of the screen.
+	RAToastGravityLeft = 1 << 3
 };
 
 /// Type for the toast duration in seconds.
