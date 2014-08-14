@@ -8,6 +8,9 @@
 
 #import "RAToastView.h"
 
+/// Default font and size for the toast.
+#define kRAToastFontDefault [UIFont systemFontOfSize:14.0]
+
 @interface RAToastViewDefault : RAToastView
 
 @end

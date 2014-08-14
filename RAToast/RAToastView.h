@@ -7,13 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@class RAToast;
+#import "RAToast.h"
 
 /// The margin between the screen edges and the toast view.
 extern const NSInteger RAToastViewMargin;
 
+/**
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 @interface RAToastView : UIView
+
+/// Toast linked to the view.
+@property (readonly) RAToast *toast;
 
 /// The available size for the toast.
 @property (nonatomic, readonly) CGSize availableSize;
@@ -40,8 +45,18 @@ extern const NSInteger RAToastViewMargin;
 
 #pragma mark - Layout
 
+/**
+ Configure the toast view.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 - (void)setupView;
 
+/**
+ Calculate the size and position of the toast view.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 - (void)updateView;
 
 @end

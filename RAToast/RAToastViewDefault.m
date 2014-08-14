@@ -13,6 +13,7 @@
 	UILabel *_textLabel;
 }
 
+/// Label for the toast text.
 @property UILabel *textLabel;
 
 @end
@@ -23,16 +24,18 @@
 
 - (void)setupView
 {
+	// Initialize the core toast view.
 	[super setupView];
 
-	[self setTextLabel:[[UILabel alloc] initWithFrame:[self bounds]]];
+	// Setup the text label configurations.
+	[self setTextLabel:[[UILabel alloc] initWithFrame:CGRectZero]];
 	[[self textLabel] setBackgroundColor:[UIColor clearColor]];
+	[[self textLabel] setFont:kRAToastFontDefault];
 	[[self textLabel] setTextColor:[UIColor whiteColor]];
-	[[self textLabel] setFont:[UIFont systemFontOfSize:14.0]];
 	[[self textLabel] setNumberOfLines:0];
-	[[self textLabel] setText:@"Demo sample text"];
-	// [[self textLabel] setText:[[self toast] text]];
+	[[self textLabel] setText:[[self toast] text]];
 
+	// Add the text label to the toast view.
 	[self addSubview:[self textLabel]];
 }
 
@@ -40,11 +43,11 @@
 {
 	// Setup the padding for each side within the toast view. From the outer
 	// edge of the background view to the text label edge, X and Y points.
-	CGPoint point = CGPointMake(15.0, 5.0);
+	CGPoint position = CGPointMake(15.0, 10.0);
 
 	// Calculate the total horizontal and vertical padding.
-	CGFloat horizontal = round(point.x * 2.0);
-	CGFloat vertical = round(point.y * 2.0);
+	CGFloat horizontal = round(position.x * 2.0);
+	CGFloat vertical = round(position.y * 2.0);
 
 	// Retrieve the available screen size.
 	CGSize available = [self availableSize];
@@ -63,13 +66,15 @@
 	height = MIN(size.height, height);
 
 	// Set the new frame dimensions for the text label, including the margin.
-	[[self textLabel] setFrame:CGRectMake(point.x, point.y, width, height)];
+	[[self textLabel] setFrame:CGRectMake(position.x, position.y, width, height)];
 
 	// Calculate the width and height for the background view, which is
 	// basically the width and height from the text label plus the total
 	// horizontal and vertical padding.
 	width = round(width + horizontal);
 	height = round(height + vertical);
+
+	// TODO: Seems to be a bug with the size when the text overflows the screen.
 
 	return CGSizeMake(width, height);
 }
