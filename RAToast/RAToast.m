@@ -17,6 +17,8 @@ const RAToastDuration RAToastDurationShort = 1.0;
 const RAToastDuration RAToastDurationNormal = 2.0;
 const RAToastDuration RAToastDurationLong = 3.0;
 
+static UIViewController *_controller;
+
 /**
  Handles the toast configuration and relay actions.
 
@@ -96,6 +98,38 @@ const RAToastDuration RAToastDurationLong = 3.0;
 
 	// Add the toast operation to the toast queue.
 	[[RAToastCenter defaultCenter] addToast:[self operation]];
+}
+
+#pragma mark - Controller
+
+- (UIViewController *)getController
+{
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+		UIViewController *controller = rootViewController;
+
+		// There're scenarios where you'd want to use another view controller
+		// than the application root view controller.
+		//
+		// To do this, the root view controller have to conform to the
+		// `RAToastControllerDelegate`-protocol and responds to the
+		// `getToastController`-selector, which in turn should provide
+		// the controller.
+		if ( [rootViewController conformsToProtocol:@protocol(RAToastControllerDelegate)] ) {
+			if ( [rootViewController respondsToSelector:@selector(getToastController)] ) {
+				// Attempt to retrieve the controller delegate, if none is found
+				// revert to the root view controller.
+				controller = [rootViewController performSelector:@selector(getToastController)];
+				if ( !controller ) {
+					controller = rootViewController;
+				}
+			}
+		}
+		_controller = controller;
+	});
+
+	return _controller;
 }
 
 @end

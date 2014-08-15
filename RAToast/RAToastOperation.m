@@ -98,31 +98,9 @@
 		[view updateView];
 		[view setAlpha:0.0];
 
-		// TODO: Migrate the controller retrieval to the toast class.
-		// Also, cache the controller since it probably won't change?
-
-		// Retrieve the root view controller.
-		// TODO: Use the `presentedViewController` from the root view controller.
-		UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-		UIViewController *controllerDelegate = rootViewController;
-
-		// There are scenarios where you'd want to use another view controller rather than
-		// the root view controller as the toast delegate. To do this the root view controller
-		// have to conform to the `RAToastControllerDelegate`-protocol and respond to the
-		// `getToastController`-selector, which in turn should provide the delegate controller.
-		if ( [rootViewController conformsToProtocol:@protocol(RAToastControllerDelegate)] ) {
-			if ( [rootViewController respondsToSelector:@selector(getToastController)] ) {
-				// Attempt to retrieve the controller delegate, if none is found
-				// revert to the root view controller.
-				controllerDelegate = [rootViewController performSelector:@selector(getToastController)];
-				if ( !controllerDelegate ) {
-					controllerDelegate = rootViewController;
-				}
-			}
-		}
-
-		// Add the toast-view to the controller delegate.
-		[[controllerDelegate view] addSubview:view];
+		// Retrieve the toast controller and add the toast view.
+		UIViewController *controller = [[self toast] getController];
+		[[controller view] addSubview:view];
 
 		// TODO: Migrate the animation to the view, with support for custom animations.
 		// The animation have to be supplied with a callback-block that will

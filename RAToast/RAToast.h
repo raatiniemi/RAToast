@@ -111,4 +111,8 @@ extern const RAToastDuration RAToastDurationLong;
  */
 - (void)show;
 
+#pragma mark - Controller
+
+- (UIViewController *)getController;
+
 @end
