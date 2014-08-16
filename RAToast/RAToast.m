@@ -111,11 +111,6 @@ static UIViewController *_controller;
 
 		// There're scenarios where you'd want to use another view controller
 		// than the application root view controller.
-		//
-		// To do this, the root view controller have to conform to the
-		// `RAToastControllerDelegate`-protocol and responds to the
-		// `getToastController`-selector, which in turn should provide
-		// the controller.
 		if ( [rootViewController conformsToProtocol:@protocol(RAToastControllerDelegate)] ) {
 			if ( [rootViewController respondsToSelector:@selector(getToastController)] ) {
 				// Attempt to retrieve the controller delegate, if none is found
