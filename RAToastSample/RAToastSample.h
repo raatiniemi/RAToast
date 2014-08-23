@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RAViewController.h"
+#import "RAToastViewController.h"
 
 @interface RAToastSample : UIResponder <UIApplicationDelegate>
 

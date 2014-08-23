@@ -13,7 +13,7 @@
 - (void)applicationDidFinishLaunching:(UIApplication *)application
 {
 	[self setWindow:[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]];
-	[[self window] setRootViewController:[[RAViewController alloc] init]];
+	[[self window] setRootViewController:[[RAToastViewController alloc] init]];
 	[[self window] makeKeyAndVisible];
 }
 

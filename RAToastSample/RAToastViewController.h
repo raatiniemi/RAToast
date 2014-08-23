@@ -14,6 +14,6 @@
 
  @author Tobias Raatiniemi <raatiniemi@gmail.com>
  */
-@interface RAViewController : UIViewController
+@interface RAToastViewController : UITableViewController
 
 @end

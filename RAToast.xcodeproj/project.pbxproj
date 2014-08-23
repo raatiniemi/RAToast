@@ -12,7 +12,7 @@
 		2D2272B3194BA90E00CE1224 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D8CEFAD194B9DBF0054D3CD /* UIKit.framework */; };
 		2D2272B9194BA90E00CE1224 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2D2272B7194BA90E00CE1224 /* InfoPlist.strings */; };
 		2D2272BB194BA90E00CE1224 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D2272BA194BA90E00CE1224 /* main.m */; };
-		2D2272C8194BA90E00CE1224 /* RAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D2272C7194BA90E00CE1224 /* RAViewController.m */; };
+		2D2272C8194BA90E00CE1224 /* RAToastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D2272C7194BA90E00CE1224 /* RAToastViewController.m */; };
 		2D2272CA194BA90E00CE1224 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D2272C9194BA90E00CE1224 /* Images.xcassets */; };
 		2D2272E5194BAA1500CE1224 /* RAToastSample.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D2272E4194BAA1500CE1224 /* RAToastSample.m */; };
 		2D2272F2194C280300CE1224 /* RAToastView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D2272F1194C280300CE1224 /* RAToastView.m */; };
@@ -53,8 +53,8 @@
 		2D2272B8194BA90E00CE1224 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2D2272BA194BA90E00CE1224 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2D2272BC194BA90E00CE1224 /* RAToastSample-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RAToastSample-Prefix.pch"; sourceTree = "<group>"; };
-		2D2272C6194BA90E00CE1224 /* RAViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RAViewController.h; sourceTree = "<group>"; };
-		2D2272C7194BA90E00CE1224 /* RAViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RAViewController.m; sourceTree = "<group>"; };
+		2D2272C6194BA90E00CE1224 /* RAToastViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RAToastViewController.h; sourceTree = "<group>"; };
+		2D2272C7194BA90E00CE1224 /* RAToastViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RAToastViewController.m; sourceTree = "<group>"; };
 		2D2272C9194BA90E00CE1224 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2D2272E3194BAA1500CE1224 /* RAToastSample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RAToastSample.h; sourceTree = "<group>"; };
 		2D2272E4194BAA1500CE1224 /* RAToastSample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RAToastSample.m; sourceTree = "<group>"; };
@@ -132,8 +132,8 @@
 		2D2272E7194BAA6C00CE1224 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				2D2272C6194BA90E00CE1224 /* RAViewController.h */,
-				2D2272C7194BA90E00CE1224 /* RAViewController.m */,
+				2D2272C6194BA90E00CE1224 /* RAToastViewController.h */,
+				2D2272C7194BA90E00CE1224 /* RAToastViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -328,7 +328,7 @@
 			files = (
 				2D2272BB194BA90E00CE1224 /* main.m in Sources */,
 				2D2272E5194BAA1500CE1224 /* RAToastSample.m in Sources */,
-				2D2272C8194BA90E00CE1224 /* RAViewController.m in Sources */,
+				2D2272C8194BA90E00CE1224 /* RAToastViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
