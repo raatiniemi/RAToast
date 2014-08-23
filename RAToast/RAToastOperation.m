@@ -101,6 +101,7 @@
 		// Retrieve the toast controller and add the toast view.
 		UIViewController *controller = [[self toast] getController];
 		[[controller view] addSubview:view];
+		[[controller view] bringSubviewToFront:view];
 
 		// TODO: Migrate the animation to the view, with support for custom animations.
 		// The animation have to be supplied with a callback-block that will
@@ -108,10 +109,12 @@
 		// next operation won't execute.
 
 		[UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+			[[controller view] bringSubviewToFront:view];
 			[view setAlpha:1.0];
 		} completion:^(BOOL finished) {
 			if ( finished ) {
 				[UIView animateWithDuration:1.0 delay:[[self toast] duration] options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+					[[controller view] bringSubviewToFront:view];
 					[view setAlpha:0.0];
 				} completion:^(BOOL finished) {
 					if ( finished ) {
