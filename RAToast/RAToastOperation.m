@@ -12,14 +12,14 @@
 #import "RAToastView.h"
 #import "RAToastControllerDelegate.h"
 
-/// Status key for ready.
-#define kStatusKeyReady @"isReady"
+/// Operation status key for ready to execute.
+static NSString *operationStatusKeyReady = @"isReady";
 
-/// Status key for executing.
-#define kStatusKeyExecuting @"isExecuting"
+/// Operation status key for executing.
+static NSString *operationStatusKeyExecuting = @"isExecuting";
 
-/// Status key for finished.
-#define kStatusKeyFinished @"isFinished"
+/// Operation status key for finished executing.
+static NSString *operationStatusKeyFinished = @"isFinished";
 
 /**
  Executes the `RAToast` within the queue, relays the animation to the view.
@@ -56,9 +56,9 @@
 			[self setToast:toast];
 
 			// The toast have been set and everything seems fine, change status.
-			[self willChangeValueForKey:kStatusKeyReady];
+			[self willChangeValueForKey:operationStatusKeyReady];
 			[self setStatus:RAToastOperationStatusReady];
-			[self didChangeValueForKey:kStatusKeyReady];
+			[self didChangeValueForKey:operationStatusKeyReady];
 		} else {
 			// Invalid instance of `RAToast` have been supplied.
 			[NSException raise:NSInvalidArgumentException
@@ -89,9 +89,9 @@
 - (void)main
 {
 	// Toast is about to start executing, change status.
-	[self willChangeValueForKey:kStatusKeyExecuting];
+	[self willChangeValueForKey:operationStatusKeyExecuting];
 	[self setStatus:RAToastOperationStatusExecuting];
-	[self didChangeValueForKey:kStatusKeyExecuting];
+	[self didChangeValueForKey:operationStatusKeyExecuting];
 
 	dispatch_sync(dispatch_get_main_queue(), ^{
 		RAToastView *view = [[self toast] view];
@@ -119,9 +119,9 @@
 				} completion:^(BOOL finished) {
 					if ( finished ) {
 						// Toast have finished, change status.
-						[self willChangeValueForKey:kStatusKeyFinished];
+						[self willChangeValueForKey:operationStatusKeyFinished];
 						[self setStatus:RAToastOperationStatusFinished];
-						[self didChangeValueForKey:kStatusKeyFinished];
+						[self didChangeValueForKey:operationStatusKeyFinished];
 
 						// Remove the view from the window. If the view is not removed
 						// the views will keep stacking with each toast.
