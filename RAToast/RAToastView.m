@@ -61,6 +61,14 @@ const NSInteger RAToastViewMargin = 10.0;
 	[self setClipsToBounds:YES];
 
 	[[self layer] setCornerRadius:18.0];
+
+	UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleToastSwipe:)];
+	[swipe setDirection:UISwipeGestureRecognizerDirectionRight];
+	[self addGestureRecognizer:swipe];
+
+	swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleToastSwipe:)];
+	[swipe setDirection:UISwipeGestureRecognizerDirectionLeft];
+	[self addGestureRecognizer:swipe];
 }
 
 - (void)updateView
@@ -164,6 +172,36 @@ const NSInteger RAToastViewMargin = 10.0;
 		}
 
 		completion(finished);
+	}];
+}
+
+#pragma mark - User interaction
+
+- (void)handleToastSwipe:(UISwipeGestureRecognizer *)recognizer
+{
+	[[self hideTimer] invalidate];
+	[self setHideTimer:nil];
+
+	if ( [self respondsToSelector:kRAToastPreHideAnimationStateSelector] ) {
+		[self performSelector:kRAToastPreHideAnimationStateSelector];
+	}
+
+	[UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+		CGRect frame = [self frame];
+		if ( [recognizer direction] & UISwipeGestureRecognizerDirectionLeft ) {
+			frame.origin.x = -frame.size.width;
+		} else {
+			CGSize size = [self availableSize];
+			frame.origin.x = frame.size.width + size.width + RAToastViewMargin;
+		}
+		[self setFrame:frame];
+	} completion:^(BOOL finished) {
+		if ( [self respondsToSelector:kRAToastPostHideAnimationStateSelector] ) {
+			[self performSelector:kRAToastPostHideAnimationStateSelector];
+		}
+
+		// TODO: Correct handle the `completion`.
+		// completion(finished);
 	}];
 }
 
