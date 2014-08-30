@@ -96,38 +96,23 @@ static NSString *operationStatusKeyFinished = @"isFinished";
 	dispatch_sync(dispatch_get_main_queue(), ^{
 		RAToastView *view = [[self toast] view];
 		[view updateView];
-		[view setAlpha:0.0];
 
 		// Retrieve the toast controller and add the toast view.
 		UIViewController *controller = [[self toast] getController];
 		[[controller view] addSubview:view];
 		[[controller view] bringSubviewToFront:view];
 
-		// TODO: Migrate the animation to the view, with support for custom animations.
-		// The animation have to be supplied with a callback-block that will
-		// change the value of the operation status to finished, otherwise the
-		// next operation won't execute.
-
-		[UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-			[[controller view] bringSubviewToFront:view];
-			[view setAlpha:1.0];
-		} completion:^(BOOL finished) {
+		// TODO: Document...
+		[view animateWithCompletion:^(BOOL finished) {
 			if ( finished ) {
-				[UIView animateWithDuration:1.0 delay:[[self toast] duration] options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-					[[controller view] bringSubviewToFront:view];
-					[view setAlpha:0.0];
-				} completion:^(BOOL finished) {
-					if ( finished ) {
-						// Toast have finished, change status.
-						[self willChangeValueForKey:operationStatusKeyFinished];
-						[self setStatus:RAToastOperationStatusFinished];
-						[self didChangeValueForKey:operationStatusKeyFinished];
+				// Toast have finished, change status.
+				[self willChangeValueForKey:operationStatusKeyFinished];
+				[self setStatus:RAToastOperationStatusFinished];
+				[self didChangeValueForKey:operationStatusKeyFinished];
 
-						// Remove the view from the window. If the view is not removed
-						// the views will keep stacking with each toast.
-						[view removeFromSuperview];
-					}
-				}];
+				// Remove the view from the window. If the view is not removed
+				// the views will keep stacking with each toast.
+				[view removeFromSuperview];
 			}
 		}];
 	});

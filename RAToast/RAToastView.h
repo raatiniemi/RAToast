@@ -15,7 +15,7 @@ extern const NSInteger RAToastViewMargin;
 /**
  @author Tobias Raatiniemi <raatiniemi@gmail.com>
  */
-@interface RAToastView : UIView
+@interface RAToastView : UIView <RAToastAnimationDelegate>
 
 /// Toast linked to the view.
 @property (readonly) RAToast *toast;

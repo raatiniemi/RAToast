@@ -16,16 +16,28 @@ const NSInteger RAToastViewMargin = 10.0;
 @interface RAToastView () {
 @private
 	RAToast *_toast;
+
+	NSTimer *_hideTimer;
 }
 
 /// Toast linked to the view.
 @property (readwrite) RAToast *toast;
+
+@property NSTimer *hideTimer;
+
+#pragma mark - Animation
+
+- (void)handleHideAnimationWithTimer:(NSTimer *)timer;
+
+- (void)performHideAnimationWithCompletion:(void (^)(BOOL))completion;
 
 @end
 
 @implementation RAToastView
 
 @synthesize toast = _toast;
+
+@synthesize hideTimer = _hideTimer;
 
 #pragma mark - Initialization
 
@@ -126,6 +138,73 @@ const NSInteger RAToastViewMargin = 10.0;
 - (CGSize)size
 {
 	return CGSizeZero;
+}
+
+#pragma mark - Animation
+
+- (void)handleHideAnimationWithTimer:(NSTimer *)timer
+{
+	// TODO: Verify that the userInfo is the completion block.
+	if ( [timer userInfo] ) {
+		[self performHideAnimationWithCompletion:[timer userInfo]];
+	}
+}
+
+- (void)performHideAnimationWithCompletion:(void (^)(BOOL))completion
+{
+	if ( [self respondsToSelector:kRAToastPreHideAnimationStateSelector] ) {
+		[self performSelector:kRAToastPreHideAnimationStateSelector];
+	}
+
+	[UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+		[self hideAnimationState];
+	} completion:^(BOOL finished) {
+		if ( [self respondsToSelector:kRAToastPostHideAnimationStateSelector] ) {
+			[self performSelector:kRAToastPostHideAnimationStateSelector];
+		}
+
+		completion(finished);
+	}];
+}
+
+#pragma mark - RAToastAnimationDelegate
+
+- (void)animateWithCompletion:(void (^)(BOOL))completion
+{
+	[self preShowAnimationState];
+
+	[UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^{
+		[self showAnimationState];
+	} completion:^(BOOL finished) {
+		if ( finished ) {
+			if ( [self respondsToSelector:kRAToastPostShowAnimationStateSelector] ) {
+				[self performSelector:kRAToastPostShowAnimationStateSelector];
+			}
+
+			[self setHideTimer:[NSTimer scheduledTimerWithTimeInterval:[[self toast] duration] target:self selector:@selector(handleHideAnimationWithTimer:) userInfo:completion repeats:NO]];
+		}
+	}];
+}
+
+#pragma mark -- Animation state
+
+#pragma mark --- Show
+
+- (void)preShowAnimationState
+{
+	[self setAlpha:0.0];
+}
+
+- (void)showAnimationState
+{
+	[self setAlpha:1.0];
+}
+
+#pragma mark -- Hide
+
+- (void)hideAnimationState
+{
+	[self setAlpha:0.0];
 }
 
 @end
