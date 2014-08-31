@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+/// Block definition for the animation completion handler.
+typedef void(^RAToastAnimationCompletion)(BOOL finished);
+
 /// Selector for the `preShowAnimationState`-method.
 #define kRAToastPreShowAnimationStateSelector @selector(preShowAnimationState)
 
