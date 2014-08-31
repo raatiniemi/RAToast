@@ -12,18 +12,28 @@
 /// The margin between the screen edges and the toast view.
 extern const NSInteger RAToastViewMargin;
 
+/// The animation duration for displaying and hiding the toast view.
+extern const RAToastDuration RAToastAnimationDuration;
+
+/// The animation delay for displaying and hiding the toast view.
+extern const RAToastDuration RAToastAnimationDelay;
+
 /**
  @author Tobias Raatiniemi <raatiniemi@gmail.com>
  */
-@interface RAToastView : UIView <RAToastAnimationDelegate>
+@interface RAToastView : UIView <RAToastAnimationDelegate> {
+@protected
+	BOOL _enableTapUserInteraction;
+	BOOL _enableSwipeUserInteraction;
+}
 
-/// Toast linked to the view.
+/// Reference to the toast initializer.
 @property (readonly) RAToast *toast;
 
-/// The available size for the toast.
+/// Available screen space including the view margin.
 @property (nonatomic, readonly) CGSize availableSize;
 
-/// The calculated size of the toast.
+/// The actual size of the toast, re-calculated on each call.
 @property (nonatomic, readonly) CGSize size;
 
 #pragma mark - Initialization
@@ -37,16 +47,19 @@ extern const NSInteger RAToastViewMargin;
  */
 - (instancetype)initWithToast:(RAToast *)toast;
 
+/// Disabled, use `initWithToast:`.
 - (id)init __unavailable;
 
+/// Disabled, use `initWithToast:`.
 - (id)initWithFrame:(CGRect)frame __unavailable;
 
+/// Disabled, use `initWithToast:`.
 - (id)initWithCoder:(NSCoder *)aDecoder __unavailable;
 
 #pragma mark - Layout
 
 /**
- Configure the toast view.
+ Configure the toast view and setup the gesture recognizers.
 
  @author Tobias Raatiniemi <raatiniemi@gmail.com>
  */
@@ -58,5 +71,27 @@ extern const NSInteger RAToastViewMargin;
  @author Tobias Raatiniemi <raatiniemi@gmail.com>
  */
 - (void)updateView;
+
+#pragma mark - Animation
+
+/**
+ Hide the toast view with animation state.
+
+ @param animation Animation state to be used to hide the toast.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+
+ @note
+ Triggers both the pre/post hide state, if the view reponds to the selectors.
+ */
+- (void)performHideWithAnimation:(void (^)(void))animation;
+
+#pragma mark - User interaction
+
+/// Enable or disable the tap user interaction on the toast.
+@property (getter = isTapUserInteractionEnabled) BOOL enableTapUserInteraction;
+
+/// Enable or disable the swipe user interaction on the toast.
+@property (getter = isSwipeUserInteractionEnabled) BOOL enableSwipeUserInteraction;
 
 @end

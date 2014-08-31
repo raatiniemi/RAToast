@@ -10,6 +10,10 @@
 
 const NSInteger RAToastViewMargin = 10.0;
 
+const RAToastDuration RAToastAnimationDuration = 1.0;
+
+const RAToastDuration RAToastAnimationDelay = 0.0;
+
 /**
  @author Tobias Raatiniemi <raatiniemi@gmail.com>
  */
@@ -18,18 +22,53 @@ const NSInteger RAToastViewMargin = 10.0;
 	RAToast *_toast;
 
 	NSTimer *_hideTimer;
+
+	/// Toast animation completion handler.
+	RAToastAnimationCompletion _completion;
 }
 
-/// Toast linked to the view.
 @property (readwrite) RAToast *toast;
 
+/// Timer for hiding the toast after the duration have expired.
 @property NSTimer *hideTimer;
 
 #pragma mark - Animation
 
+/**
+ Initialize the default hide animation state after the toast duration have expired.
+
+ @param timer Timer that triggered the hide.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
 - (void)handleHideAnimationWithTimer:(NSTimer *)timer;
 
-- (void)performHideAnimationWithCompletion:(void (^)(BOOL))completion;
+#pragma mark - User interaction
+
+/**
+ Handles when the toast have been tapped, provided that tap is enabled.
+
+ @param recognizer Activated gesture recognizer.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+
+ @note
+ The animation for hiding the toast view when it has been tapped is always fade out.
+ */
+- (void)handleToastTap:(UITapGestureRecognizer *)recognizer;
+
+/**
+ Handles when the toast have been horizontal swiped, provided that swipe is enabled.
+
+ @param recognizer Activated gesture recognizer.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+
+ @note
+ The animation for hiding the toast view when it has been swiped is always to
+ position the view outside the screen in the direction it was swiped.
+ */
+- (void)handleToastSwipe:(UISwipeGestureRecognizer *)recognizer;
 
 @end
 
@@ -39,12 +78,20 @@ const NSInteger RAToastViewMargin = 10.0;
 
 @synthesize hideTimer = _hideTimer;
 
+@synthesize enableTapUserInteraction = _enableTapUserInteraction;
+
+@synthesize enableSwipeUserInteraction = _enableSwipeUserInteraction;
+
 #pragma mark - Initialization
 
 - (instancetype)initWithToast:(RAToast *)toast
 {
 	if ( self = [super initWithFrame:CGRectZero] ) {
 		[self setToast:toast];
+
+		// Enable both tap and swipe user interactions by default.
+		[self setEnableTapUserInteraction:YES];
+		[self setEnableSwipeUserInteraction:YES];
 
 		// Initialize the view configuration.
 		[self setupView];
@@ -62,13 +109,29 @@ const NSInteger RAToastViewMargin = 10.0;
 
 	[[self layer] setCornerRadius:18.0];
 
-	UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleToastSwipe:)];
-	[swipe setDirection:UISwipeGestureRecognizerDirectionRight];
-	[self addGestureRecognizer:swipe];
+	// Check if the `tap` user interaction has been enabled. We should only
+	// hook up the gesture recognizer if it has been enabled.
+	if ( [self isTapUserInteractionEnabled] ) {
+		// Setup the tap gesture recogniser.
+		UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleToastTap:)];
+		[self addGestureRecognizer:tap];
+	}
 
-	swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleToastSwipe:)];
-	[swipe setDirection:UISwipeGestureRecognizerDirectionLeft];
-	[self addGestureRecognizer:swipe];
+	// Check if the `swipe` user interaction has been enabled. We should only
+	// hook up the gesture recognizer if it has been enabled.
+	if ( [self isSwipeUserInteractionEnabled] ) {
+		UISwipeGestureRecognizer *swipe;
+
+		// Setup the swipe to the right gesture recognizer.
+		swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleToastSwipe:)];
+		[swipe setDirection:UISwipeGestureRecognizerDirectionRight];
+		[self addGestureRecognizer:swipe];
+
+		// Setup the swipe to the left gesture recognizer.
+		swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleToastSwipe:)];
+		[swipe setDirection:UISwipeGestureRecognizerDirectionLeft];
+		[self addGestureRecognizer:swipe];
+	}
 }
 
 - (void)updateView
@@ -150,76 +213,115 @@ const NSInteger RAToastViewMargin = 10.0;
 
 #pragma mark - Animation
 
-- (void)handleHideAnimationWithTimer:(NSTimer *)timer
+- (void)performHideWithAnimation:(void (^)(void))animation
 {
-	// TODO: Verify that the userInfo is the completion block.
-	if ( [timer userInfo] ) {
-		[self performHideAnimationWithCompletion:[timer userInfo]];
-	}
-}
+	// Destroy the timer for hiding the toast. Prevents the hide animation from
+	// being executed if the toast is dismissed with an user interaction.
+	[[self hideTimer] invalidate];
+	[self setHideTimer:nil];
 
-- (void)performHideAnimationWithCompletion:(void (^)(BOOL))completion
-{
+	// If the view responds to the pre-hide animation state selector,
+	// we have to execute the method.
 	if ( [self respondsToSelector:kRAToastPreHideAnimationStateSelector] ) {
 		[self performSelector:kRAToastPreHideAnimationStateSelector];
 	}
 
-	[UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-		[self hideAnimationState];
+	[UIView animateWithDuration:RAToastAnimationDuration delay:RAToastAnimationDelay options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+		// Setup the animation state for hiding the view.
+		animation();
 	} completion:^(BOOL finished) {
+		// If the view responds to the post-hide animation state selector,
+		// we have to execute the method.
 		if ( [self respondsToSelector:kRAToastPostHideAnimationStateSelector] ) {
 			[self performSelector:kRAToastPostHideAnimationStateSelector];
 		}
 
-		completion(finished);
+		// Run the completion handler. This will tell the `RAToastOperation` that
+		// the toast is finished, and the next one can begin.
+		_completion(finished);
+	}];
+}
+
+- (void)handleHideAnimationWithTimer:(NSTimer *)timer
+{
+	[self performHideWithAnimation:^{
+		// Perform the default hide animation.
+		[self hideAnimationState];
 	}];
 }
 
 #pragma mark - User interaction
 
+- (void)handleToastTap:(UITapGestureRecognizer *)recognizer
+{
+	// Only handle the tap user interaction if it's enabled.
+	if ( [self isTapUserInteractionEnabled] ) {
+		[self performHideWithAnimation:^{
+			// Toasts that are tapped should always just fade away.
+			[self setAlpha:0.0];
+		}];
+	}
+}
+
 - (void)handleToastSwipe:(UISwipeGestureRecognizer *)recognizer
 {
-	[[self hideTimer] invalidate];
-	[self setHideTimer:nil];
-
-	if ( [self respondsToSelector:kRAToastPreHideAnimationStateSelector] ) {
-		[self performSelector:kRAToastPreHideAnimationStateSelector];
+	// Only handle the swipe user interaction if it's enabled.
+	if ( [self isSwipeUserInteractionEnabled] ) {
+		[self performHideWithAnimation:^{
+			// Depending on which one of the swipe gestures have been initialized
+			// the position calculation will be different.
+			//
+			// Also, depending on which direction the user have swiped and what
+			// horizontal gravity is being used, the animation speed will seem
+			// different since the travel distance is different but the actual
+			// duration is the same.
+			CGRect frame = [self frame];
+			if ( [recognizer direction] & UISwipeGestureRecognizerDirectionLeft ) {
+				// The view should exit the screen to the left, e.g. just put the
+				// view it's own negative width off the screen.
+				frame.origin.x = -frame.size.width;
+			} else {
+				// The right direction is a bit trickier since we need to know the
+				// entire screen width and toast width, including the margin.
+				CGSize size = [self availableSize];
+				frame.origin.x = size.width + frame.size.width + RAToastViewMargin;
+			}
+			// Setup the frame with the new horizontal position.
+			[self setFrame:frame];
+		}];
 	}
-
-	[UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-		CGRect frame = [self frame];
-		if ( [recognizer direction] & UISwipeGestureRecognizerDirectionLeft ) {
-			frame.origin.x = -frame.size.width;
-		} else {
-			CGSize size = [self availableSize];
-			frame.origin.x = frame.size.width + size.width + RAToastViewMargin;
-		}
-		[self setFrame:frame];
-	} completion:^(BOOL finished) {
-		if ( [self respondsToSelector:kRAToastPostHideAnimationStateSelector] ) {
-			[self performSelector:kRAToastPostHideAnimationStateSelector];
-		}
-
-		// TODO: Correct handle the `completion`.
-		// completion(finished);
-	}];
 }
 
 #pragma mark - RAToastAnimationDelegate
 
-- (void)animateWithCompletion:(void (^)(BOOL))completion
+- (void)animateWithCompletion:(RAToastAnimationCompletion)completion
 {
+	// Check that the completion handler have been supplied.
+	if ( !completion ) {
+		// TODO: Handle if no completion have been supplied.
+		// Raise an exception? Or, something a bit more subtle.
+	}
+
+	// Assign the completion handler to the instance variable. The completion
+	// handler may be used from several methods.
+	_completion = completion;
+
+	// Setup the pre-show animation state, e.g. from which state should the
+	// toast be animated to be shown.
 	[self preShowAnimationState];
 
-	[UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^{
+	[UIView animateWithDuration:RAToastAnimationDuration delay:RAToastAnimationDelay options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^{
 		[self showAnimationState];
 	} completion:^(BOOL finished) {
 		if ( finished ) {
+			// If the view responds to the post-show animation state selector,
+			// we have to execute the method.
 			if ( [self respondsToSelector:kRAToastPostShowAnimationStateSelector] ) {
 				[self performSelector:kRAToastPostShowAnimationStateSelector];
 			}
 
-			[self setHideTimer:[NSTimer scheduledTimerWithTimeInterval:[[self toast] duration] target:self selector:@selector(handleHideAnimationWithTimer:) userInfo:completion repeats:NO]];
+			// Setup the timer for hiding the toast after the duration has expired.
+			[self setHideTimer:[NSTimer scheduledTimerWithTimeInterval:[[self toast] duration] target:self selector:@selector(handleHideAnimationWithTimer:) userInfo:nil repeats:NO]];
 		}
 	}];
 }
