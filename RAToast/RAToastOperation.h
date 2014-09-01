@@ -46,13 +46,7 @@ typedef NS_ENUM(short int, RAToastOperationStatus) {
  */
 - (instancetype)initWithToast:(RAToast *)toast;
 
-/**
- @author Tobias Raatiniemi <raatiniemi@gmail.com>
-
- @note
- The `init`-method have been marked as unavilable since every
- `RAToastOperation`-object have to be initialized with valid `RAToast`-object.
- */
+/// Disabled, use `initWithToast:`.
 - (id)init __unavailable;
 
 @end

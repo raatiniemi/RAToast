@@ -97,12 +97,18 @@ static NSString *operationStatusKeyFinished = @"isFinished";
 		RAToastView *view = [[self toast] view];
 		[view updateView];
 
-		// Retrieve the toast controller and add the toast view.
+		// Retrieve the toast controller.
 		UIViewController *controller = [[self toast] getController];
+
+		// Add the toast view to the controllers view.
 		[[controller view] addSubview:view];
 		[[controller view] bringSubviewToFront:view];
 
-		// TODO: Document...
+		// Relay the animation request to the view.
+		//
+		// The animation related configuration is located within the view. The
+		// completion-callback to `animateWithCompletion:` is for the operation
+		// to update the status when the animation is finished.
 		[view animateWithCompletion:^(BOOL finished) {
 			if ( finished ) {
 				// Toast have finished, change status.
