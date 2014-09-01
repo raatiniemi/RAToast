@@ -11,6 +11,78 @@
 #import "RAToastAnimationDelegate.h"
 #import "RAToastControllerDelegate.h"
 
+// -- -- Logging
+
+/// Definition of the available log levels.
+typedef NS_ENUM(short int, RAToastLogLevel) {
+	/// Level for logging debug messages.
+	RAToastLogLevelDebug,
+
+	/// Level for logging information messages.
+	RAToastLogLevelInfo,
+
+	/// Level for logging warning messages.
+	RAToastLogLevelWarning,
+
+	/// Level for logging error messages.
+	RAToastLogLevelError
+};
+
+#if kRAToastDebug
+/// Stores the active log level within the library.
+static const RAToastLogLevel _RAToastLogLevel = RAToastLogLevelDebug;
+#else
+/// Stores the active log level within the library.
+static const RAToastLogLevel _RAToastLogLevel = RAToastLogLevelWarning;
+#endif
+
+/**
+ Macro for sending messages to the log, depending on the level.
+
+ @param level Level of log message.
+ @param format Message format with arguments.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+
+ @note
+ The default RAToastLog is only used if it is not defined, hence it is possible
+ to override the default logging mechanism with a custom, application specific.
+
+ @par
+ To override this macro you have to import the file with your custom macro
+ within the *-Prefix.pch file. Otherwise `ifndef` will not recognize that the
+ macro already have been defined.
+ */
+#ifndef RAToastLog
+#define RAToastLog( level, format, ... )\
+	do {\
+		if ( level > _RAToastLogLevel ) {\
+			NSLog(\
+				@"<%@: (%d)> %@",\
+				[[NSString stringWithUTF8String:__FILE__] lastPathComponent],\
+				__LINE__,\
+				[NSString stringWithFormat:(format), ##__VA_ARGS__]\
+			);\
+		}\
+	} while(NO)
+#endif
+
+/// Log message with debug-level.
+#define RAToastLogDebug( format, ... )\
+	RAToastLog( RAToastLogLevelDebug, format, ##__VA_ARGS__ )
+
+/// Log message with information-level.
+#define RAToastLogInfo( format, ... )\
+	RAToastLog( RAToastLogLevelInfo, format, ##__VA_ARGS__ )
+
+/// Log message with warning-level.
+#define RAToastLogWarning( format, ... )\
+	RAToastLog( RAToastLogLevelWarning, format, ##__VA_ARGS__ )
+
+/// Log message with error-level.
+#define RAToastLogError( format, ... )\
+	RAToastLog( RAToastLogLevelError, format, ##__VA_ARGS__ )
+
 @class RAToastView;
 
 /// Available toast gravity options, e.g. position on the screen.
