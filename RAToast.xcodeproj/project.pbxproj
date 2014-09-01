@@ -406,8 +406,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "RAToastSample/RAToastSample-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					kRAToastDebug,
 					"DEBUG=1",
+					kRAToastDebug,
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;

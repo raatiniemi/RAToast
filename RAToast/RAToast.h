@@ -56,7 +56,7 @@ static const RAToastLogLevel _RAToastLogLevel = RAToastLogLevelWarning;
 #ifndef RAToastLog
 #define RAToastLog( level, format, ... )\
 	do {\
-		if ( level > _RAToastLogLevel ) {\
+		if ( level >= _RAToastLogLevel ) {\
 			NSLog(\
 				@"<%@: (%d)> %@",\
 				[[NSString stringWithUTF8String:__FILE__] lastPathComponent],\
@@ -183,6 +183,17 @@ extern const RAToastDuration RAToastDurationLong;
  @author Tobias Raatiniemi <raatiniemi@gmail.com>
  */
 - (void)show;
+
+#pragma mark - Delegate
+
+/**
+ Set the toast delegate.
+
+ @param viewController View controller that will display the toast messages.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
++ (void)setDelegate:(UIViewController *)viewController;
 
 #pragma mark - Controller
 

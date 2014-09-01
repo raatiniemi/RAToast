@@ -90,6 +90,8 @@ static UIViewController *_controller;
 
 - (void)show
 {
+	// TODO: Relay the toast recognizer configuration (enable/disable) to the view.
+
 	// If no view have been defined we have to initialize the default view.
 	if ( ![self view] ) {
 		// Initialize the view with the toast.
@@ -100,10 +102,19 @@ static UIViewController *_controller;
 	[[RAToastCenter defaultCenter] addToast:[self operation]];
 }
 
+#pragma mark - Delegate
+
++ (void)setDelegate:(UIViewController *)viewController
+{
+	// TODO: Implement the `seDelegate:`-method.
+	RAToastLogWarning(@"`%s` have yet to be fully implemented", __PRETTY_FUNCTION__);
+}
+
 #pragma mark - Controller
 
 - (UIViewController *)getController
 {
+
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
