@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 
 #import "RAToastAnimationDelegate.h"
-#import "RAToastControllerDelegate.h"
 
 // -- -- Logging
 

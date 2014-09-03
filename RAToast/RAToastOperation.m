@@ -10,7 +10,6 @@
 
 #import "RAToast.h"
 #import "RAToastView.h"
-#import "RAToastControllerDelegate.h"
 
 /// Operation status key for ready to execute.
 static NSString *operationStatusKeyReady = @"isReady";
