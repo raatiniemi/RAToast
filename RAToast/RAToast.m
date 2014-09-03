@@ -17,7 +17,7 @@ const RAToastDuration RAToastDurationShort = 1.0;
 const RAToastDuration RAToastDurationNormal = 2.0;
 const RAToastDuration RAToastDurationLong = 3.0;
 
-static UIViewController *_controller;
+static UIViewController *_delegate;
 
 /**
  Handles the toast configuration and relay actions.
@@ -106,36 +106,17 @@ static UIViewController *_controller;
 
 + (void)setDelegate:(UIViewController *)viewController
 {
-	// TODO: Implement the `seDelegate:`-method.
-	RAToastLogWarning(@"`%s` have yet to be fully implemented", __PRETTY_FUNCTION__);
+	_delegate = viewController;
 }
 
-#pragma mark - Controller
-
-- (UIViewController *)getController
++ (UIViewController *)delegate
 {
-
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-		UIViewController *controller = rootViewController;
-
-		// There're scenarios where you'd want to use another view controller
-		// than the application root view controller.
-		if ( [rootViewController conformsToProtocol:@protocol(RAToastControllerDelegate)] ) {
-			if ( [rootViewController respondsToSelector:@selector(getToastController)] ) {
-				// Attempt to retrieve the controller delegate, if none is found
-				// revert to the root view controller.
-				controller = [rootViewController performSelector:@selector(getToastController)];
-				if ( !controller ) {
-					controller = rootViewController;
-				}
-			}
-		}
-		_controller = controller;
-	});
-
-	return _controller;
+	// If no delegate controller have been set we should fallback to using the
+	// root view controller, might as well set it as the delegate.
+	if ( !_delegate ) {
+		_delegate = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+	}
+	return _delegate;
 }
 
 @end

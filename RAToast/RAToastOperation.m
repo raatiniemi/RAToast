@@ -97,8 +97,8 @@ static NSString *operationStatusKeyFinished = @"isFinished";
 		RAToastView *view = [[self toast] view];
 		[view updateView];
 
-		// Retrieve the toast controller.
-		UIViewController *controller = [[self toast] getController];
+		// Retrieve the toast delegate view controller.
+		UIViewController *controller = [RAToast delegate];
 
 		// Add the toast view to the controllers view.
 		[[controller view] addSubview:view];

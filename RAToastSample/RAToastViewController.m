@@ -26,6 +26,10 @@
 {
 	[super viewDidLoad];
 
+	// Set the view controller as toast delegate. If the delegate have not been
+	// set the application root view controller will be used.
+	[RAToast setDelegate:self];
+
 	// Adjust the background color, since the background color of the toast box
 	// are semi-transparent black.
 	[[self view] setBackgroundColor:[UIColor whiteColor]];

@@ -195,8 +195,13 @@ extern const RAToastDuration RAToastDurationLong;
  */
 + (void)setDelegate:(UIViewController *)viewController;
 
-#pragma mark - Controller
+/**
+ Retrieve the toast delegate.
 
-- (UIViewController *)getController;
+ @return Toast delgate, or the root view controller if no delegate have been set.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
++ (UIViewController *)delegate;
 
 @end
