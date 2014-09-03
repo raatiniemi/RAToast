@@ -220,20 +220,28 @@ const RAToastDuration RAToastAnimationDelay = 0.0;
 	[[self hideTimer] invalidate];
 	[self setHideTimer:nil];
 
-	// If the view responds to the pre-hide animation state selector,
-	// we have to execute the method.
-	if ( [self respondsToSelector:kRAToastPreHideAnimationStateSelector] ) {
-		[self performSelector:kRAToastPreHideAnimationStateSelector];
+	if ( [self preHideAnimationStateBlock] ) {
+		[self preHideAnimationStateBlock]();
+	} else {
+		// If the view responds to the pre-hide animation state selector,
+		// we have to execute the method.
+		if ( [self respondsToSelector:kRAToastPreHideAnimationStateSelector] ) {
+			[self performSelector:kRAToastPreHideAnimationStateSelector];
+		}
 	}
 
 	[UIView animateWithDuration:RAToastAnimationDuration delay:RAToastAnimationDelay options:UIViewAnimationOptionBeginFromCurrentState animations:^{
 		// Setup the animation state for hiding the view.
 		animation();
 	} completion:^(BOOL finished) {
-		// If the view responds to the post-hide animation state selector,
-		// we have to execute the method.
-		if ( [self respondsToSelector:kRAToastPostHideAnimationStateSelector] ) {
-			[self performSelector:kRAToastPostHideAnimationStateSelector];
+		if ( [self postHideAnimationStateBlock] ) {
+			[self postHideAnimationStateBlock]();
+		} else {
+			// If the view responds to the post-hide animation state selector,
+			// we have to execute the method.
+			if ( [self respondsToSelector:kRAToastPostHideAnimationStateSelector] ) {
+				[self performSelector:kRAToastPostHideAnimationStateSelector];
+			}
 		}
 
 		// Run the completion handler. This will tell the `RAToastOperation` that
@@ -246,7 +254,11 @@ const RAToastDuration RAToastAnimationDelay = 0.0;
 {
 	[self performHideWithAnimation:^{
 		// Perform the default hide animation.
-		[self hideAnimationState];
+		if ( [self hideAnimationStateBlock] ) {
+			[self hideAnimationStateBlock]();
+		} else {
+			[self hideAnimationState];
+		}
 	}];
 }
 
@@ -308,16 +320,28 @@ const RAToastDuration RAToastAnimationDelay = 0.0;
 
 	// Setup the pre-show animation state, e.g. from which state should the
 	// toast be animated to be shown.
-	[self preShowAnimationState];
+	if ( [self preShowAnimationStateBlock] ) {
+		[self preShowAnimationStateBlock]();
+	} else {
+		[self preShowAnimationState];
+	}
 
 	[UIView animateWithDuration:RAToastAnimationDuration delay:RAToastAnimationDelay options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^{
-		[self showAnimationState];
+		if ( [self showAnimationStateBlock] ) {
+			[self showAnimationStateBlock]();
+		} else {
+			[self showAnimationState];
+		}
 	} completion:^(BOOL finished) {
 		if ( finished ) {
-			// If the view responds to the post-show animation state selector,
-			// we have to execute the method.
-			if ( [self respondsToSelector:kRAToastPostShowAnimationStateSelector] ) {
-				[self performSelector:kRAToastPostShowAnimationStateSelector];
+			if ( [self postShowAnimationStateBlock] ) {
+				[self postShowAnimationStateBlock]();
+			} else {
+				// If the view responds to the post-show animation state
+				// selector, we have to execute the method.
+				if ( [self respondsToSelector:kRAToastPostShowAnimationStateSelector] ) {
+					[self performSelector:kRAToastPostShowAnimationStateSelector];
+				}
 			}
 
 			// Setup the timer for hiding the toast after the duration has expired.

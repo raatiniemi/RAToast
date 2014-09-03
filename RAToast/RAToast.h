@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-
 #import "RAToastAnimationDelegate.h"
 
 // -- -- Logging
@@ -82,8 +81,6 @@ static const RAToastLogLevel _RAToastLogLevel = RAToastLogLevelWarning;
 #define RAToastLogError( format, ... )\
 	RAToastLog( RAToastLogLevelError, format, ##__VA_ARGS__ )
 
-@class RAToastView;
-
 /// Available toast gravity options, e.g. position on the screen.
 typedef NS_OPTIONS(short int, RAToastGravity) {
 	/// Position the toast against the top of the screen.
@@ -111,6 +108,8 @@ extern const RAToastDuration RAToastDurationNormal;
 /// Long duration (3 seconds) for displaying a toast.
 extern const RAToastDuration RAToastDurationLong;
 
+@class RAToastView;
+
 /**
  Handles the toast configuration and relay actions.
 
@@ -133,9 +132,6 @@ extern const RAToastDuration RAToastDurationLong;
 
 /// Gravity to be used with the toast, i.e. position.
 @property RAToastGravity gravity;
-
-/// View to be used with the toast.
-@property RAToastView *view;
 
 #pragma mark - Initialization
 
@@ -173,6 +169,26 @@ extern const RAToastDuration RAToastDurationLong;
  with the default toast duration.
  */
 + (instancetype)makeText:(NSString *)text;
+
+#pragma mark - View
+
+/**
+ Set the toast view.
+
+ @param view Toast view.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
+- (void)setView:(RAToastView *)view;
+
+/**
+ Retrieve the toast view.
+
+ @return Toast view, if no view have been set the default will be initialized.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
+- (RAToastView *)view;
 
 #pragma mark - Show
 

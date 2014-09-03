@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RAToast.h"
+#import "RAToastAnimationDelegate.h"
 
 /// The margin between the screen edges and the toast view.
 extern const NSInteger RAToastViewMargin;
@@ -25,6 +26,18 @@ extern const RAToastDuration RAToastAnimationDelay;
 @protected
 	BOOL _enableTapUserInteraction;
 	BOOL _enableSwipeUserInteraction;
+
+	__unsafe_unretained void (^_preShowAnimationStateBlock)(void);
+
+	__unsafe_unretained void (^_showAnimationStateBlock)(void);
+
+	__unsafe_unretained void (^_postShowAnimationStateBlock)(void);
+
+	__unsafe_unretained void (^_preHideAnimationStateBlock)(void);
+
+	__unsafe_unretained void (^_hideAnimationStateBlock)(void);
+
+	__unsafe_unretained void (^_postHideAnimationStateBlock)(void);
 }
 
 /// Reference to the toast initializer.
@@ -73,6 +86,18 @@ extern const RAToastDuration RAToastAnimationDelay;
 - (void)updateView;
 
 #pragma mark - Animation
+
+@property void (^preShowAnimationStateBlock)(void);
+
+@property void (^showAnimationStateBlock)(void);
+
+@property void (^postShowAnimationStateBlock)(void);
+
+@property void (^preHideAnimationStateBlock)(void);
+
+@property void (^hideAnimationStateBlock)(void);
+
+@property void (^postHideAnimationStateBlock)(void);
 
 /**
  Hide the toast view with animation state.

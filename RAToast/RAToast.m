@@ -7,7 +7,6 @@
 //
 
 #import "RAToast.h"
-
 #import "RAToastCenter.h"
 #import "RAToastOperation.h"
 #import "RAToastView.h"
@@ -86,18 +85,34 @@ static UIViewController *_delegate;
 	return [self makeText:text duration:RAToastDurationNormal];
 }
 
+#pragma mark - View
+
+- (void)setView:(RAToastView *)view
+{
+	// Verify that the view is an instance of `RAToastView`.
+	if ( [view isKindOfClass:[RAToastView class]] ) {
+		_view = view;
+	} else {
+		// Invalid view instance supplied.
+		RAToastLogWarning(@"View supplied to `setView:` is not an instance of `RAToastView`");
+	}
+}
+
+- (RAToastView *)view
+{
+	// If no view have been defined we have to initialize the default view.
+	if ( !_view ) {
+		// Initialize the view with the toast.
+		_view = [[RAToastViewDefault alloc] initWithToast:self];
+	}
+
+	return _view;
+}
+
 #pragma mark - Show
 
 - (void)show
 {
-	// TODO: Relay the toast recognizer configuration (enable/disable) to the view.
-
-	// If no view have been defined we have to initialize the default view.
-	if ( ![self view] ) {
-		// Initialize the view with the toast.
-		[self setView:[[RAToastViewDefault alloc] initWithToast:self]];
-	}
-
 	// Add the toast operation to the toast queue.
 	[[RAToastCenter defaultCenter] addToast:[self operation]];
 }
