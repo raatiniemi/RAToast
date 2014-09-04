@@ -221,7 +221,7 @@ const RAToastDuration RAToastAnimationDelay = 0.0;
 	[self setHideTimer:nil];
 
 	if ( [self preHideAnimationStateBlock] ) {
-		[self preHideAnimationStateBlock]();
+		[self preHideAnimationStateBlock](self);
 	} else {
 		// If the view responds to the pre-hide animation state selector,
 		// we have to execute the method.
@@ -235,7 +235,7 @@ const RAToastDuration RAToastAnimationDelay = 0.0;
 		animation();
 	} completion:^(BOOL finished) {
 		if ( [self postHideAnimationStateBlock] ) {
-			[self postHideAnimationStateBlock]();
+			[self postHideAnimationStateBlock](self);
 		} else {
 			// If the view responds to the post-hide animation state selector,
 			// we have to execute the method.
@@ -255,11 +255,73 @@ const RAToastDuration RAToastAnimationDelay = 0.0;
 	[self performHideWithAnimation:^{
 		// Perform the default hide animation.
 		if ( [self hideAnimationStateBlock] ) {
-			[self hideAnimationStateBlock]();
+			[self hideAnimationStateBlock](self);
 		} else {
 			[self hideAnimationState];
 		}
 	}];
+}
+
+#pragma mark -- Block
+
+- (void)setPreShowAnimationStateBlock:(RAToastAnimationStateBlock)block
+{
+	_preShowAnimationStateBlock = block;
+}
+
+- (RAToastAnimationStateBlock)preShowAnimationStateBlock
+{
+	return _preShowAnimationStateBlock;
+}
+
+- (void)setShowAnimationStateBlock:(RAToastAnimationStateBlock)block
+{
+	_showAnimationStateBlock = block;
+}
+
+- (RAToastAnimationStateBlock)showAnimationStateBlock
+{
+	return _showAnimationStateBlock;
+}
+
+- (void)setPostShowAnimationStateBlock:(RAToastAnimationStateBlock)block
+{
+	_postShowAnimationStateBlock = block;
+}
+
+- (RAToastAnimationStateBlock)postShowAnimationStateBlock
+{
+	return _postShowAnimationStateBlock;
+}
+
+- (void)setPreHideAnimationStateBlock:(RAToastAnimationStateBlock)block
+{
+	_preHideAnimationStateBlock = block;
+}
+
+- (RAToastAnimationStateBlock)preHideAnimationStateBlock
+{
+	return _preHideAnimationStateBlock;
+}
+
+- (void)setHideAnimationStateBlock:(RAToastAnimationStateBlock)block
+{
+	_hideAnimationStateBlock = block;
+}
+
+- (RAToastAnimationStateBlock)hideAnimationStateBlock
+{
+	return _hideAnimationStateBlock;
+}
+
+- (void)setPostHideAnimationStateBlock:(RAToastAnimationStateBlock)block
+{
+	_postHideAnimationStateBlock = block;
+}
+
+- (RAToastAnimationStateBlock)postHideAnimationStateBlock
+{
+	return _postHideAnimationStateBlock;
 }
 
 #pragma mark - User interaction
@@ -321,21 +383,21 @@ const RAToastDuration RAToastAnimationDelay = 0.0;
 	// Setup the pre-show animation state, e.g. from which state should the
 	// toast be animated to be shown.
 	if ( [self preShowAnimationStateBlock] ) {
-		[self preShowAnimationStateBlock]();
+		[self preShowAnimationStateBlock](self);
 	} else {
 		[self preShowAnimationState];
 	}
 
 	[UIView animateWithDuration:RAToastAnimationDuration delay:RAToastAnimationDelay options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowUserInteraction animations:^{
 		if ( [self showAnimationStateBlock] ) {
-			[self showAnimationStateBlock]();
+			[self showAnimationStateBlock](self);
 		} else {
 			[self showAnimationState];
 		}
 	} completion:^(BOOL finished) {
 		if ( finished ) {
 			if ( [self postShowAnimationStateBlock] ) {
-				[self postShowAnimationStateBlock]();
+				[self postShowAnimationStateBlock](self);
 			} else {
 				// If the view responds to the post-show animation state
 				// selector, we have to execute the method.

@@ -27,17 +27,17 @@ extern const RAToastDuration RAToastAnimationDelay;
 	BOOL _enableTapUserInteraction;
 	BOOL _enableSwipeUserInteraction;
 
-	__unsafe_unretained void (^_preShowAnimationStateBlock)(void);
+	void (^_preShowAnimationStateBlock)(RAToastView *view);
 
-	__unsafe_unretained void (^_showAnimationStateBlock)(void);
+	void (^_showAnimationStateBlock)(RAToastView *view);
 
-	__unsafe_unretained void (^_postShowAnimationStateBlock)(void);
+	void (^_postShowAnimationStateBlock)(RAToastView *view);
 
-	__unsafe_unretained void (^_preHideAnimationStateBlock)(void);
+	void (^_preHideAnimationStateBlock)(RAToastView *view);
 
-	__unsafe_unretained void (^_hideAnimationStateBlock)(void);
+	void (^_hideAnimationStateBlock)(RAToastView *view);
 
-	__unsafe_unretained void (^_postHideAnimationStateBlock)(void);
+	void (^_postHideAnimationStateBlock)(RAToastView *view);
 }
 
 /// Reference to the toast initializer.
@@ -87,18 +87,6 @@ extern const RAToastDuration RAToastAnimationDelay;
 
 #pragma mark - Animation
 
-@property void (^preShowAnimationStateBlock)(void);
-
-@property void (^showAnimationStateBlock)(void);
-
-@property void (^postShowAnimationStateBlock)(void);
-
-@property void (^preHideAnimationStateBlock)(void);
-
-@property void (^hideAnimationStateBlock)(void);
-
-@property void (^postHideAnimationStateBlock)(void);
-
 /**
  Hide the toast view with animation state.
 
@@ -110,6 +98,32 @@ extern const RAToastDuration RAToastAnimationDelay;
  Triggers both the pre/post hide state, if the view reponds to the selectors.
  */
 - (void)performHideWithAnimation:(void (^)(void))animation;
+
+#pragma mark -- Block
+
+- (void)setPreShowAnimationStateBlock:(RAToastAnimationStateBlock)block;
+
+- (RAToastAnimationStateBlock)preShowAnimationStateBlock;
+
+- (void)setShowAnimationStateBlock:(RAToastAnimationStateBlock)block;
+
+- (RAToastAnimationStateBlock)showAnimationStateBlock;
+
+- (void)setPostShowAnimationStateBlock:(RAToastAnimationStateBlock)block;
+
+- (RAToastAnimationStateBlock)postShowAnimationStateBlock;
+
+- (void)setPreHideAnimationStateBlock:(RAToastAnimationStateBlock)block;
+
+- (RAToastAnimationStateBlock)preHideAnimationStateBlock;
+
+- (void)setHideAnimationStateBlock:(RAToastAnimationStateBlock)block;
+
+- (RAToastAnimationStateBlock)hideAnimationStateBlock;
+
+- (void)setPostHideAnimationStateBlock:(RAToastAnimationStateBlock)block;
+
+- (RAToastAnimationStateBlock)postHideAnimationStateBlock;
 
 #pragma mark - User interaction
 
