@@ -26,10 +26,6 @@
 {
 	[super viewDidLoad];
 
-	// Set the view controller as toast delegate. If the delegate have not been
-	// set the application root view controller will be used.
-	[RAToast setDelegate:self];
-
 	// Adjust the background color, since the background color of the toast box
 	// are semi-transparent black.
 	[[self view] setBackgroundColor:[UIColor whiteColor]];
@@ -58,11 +54,31 @@
 	static NSString *identifier = @"cell";
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
 	if ( !cell ) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+		[[cell textLabel] setFont:[UIFont boldSystemFontOfSize:14.0]];
+		[[cell textLabel] setTextColor:[UIColor darkGrayColor]];
+
+		[[cell detailTextLabel] setFont:[UIFont systemFontOfSize:12.0]];
+		[[cell detailTextLabel] setTextColor:[UIColor lightGrayColor]];
+		[[cell detailTextLabel] setNumberOfLines:0];
 	}
 
 	NSString *text = [[self rows] objectAtIndex:[indexPath row]];
 	[[cell textLabel] setText:text];
+
+	if ( [@"Top left" isEqualToString:text] ) {
+		[[cell detailTextLabel] setText:@"RAToastGravityTop|RAToastGravityLeft"];
+	} else if ( [@"Top center" isEqualToString:text] ) {
+		[[cell detailTextLabel] setText:@"RAToastGravityTop"];
+	} else if ( [@"Top right" isEqualToString:text] ) {
+		[[cell detailTextLabel] setText:@"RAToastGravityTop|RAToastGravityRight"];
+	} else if ( [@"Bottom left" isEqualToString:text] ) {
+		[[cell detailTextLabel] setText:@"RAToastGravityBottom|RAToastGravityLeft"];
+	} else if ( [@"Bottom center" isEqualToString:text] ) {
+		[[cell detailTextLabel] setText:@"RAToastGravityBottom"];
+	} else if ( [@"Bottom right" isEqualToString:text] ) {
+		[[cell detailTextLabel] setText:@"RAToastGravityBottom|RAToastGravityRight"];
+	}
 
 	return cell;
 }

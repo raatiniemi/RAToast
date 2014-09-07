@@ -12,8 +12,13 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application
 {
+	RAToastViewController *tcv = [[RAToastViewController alloc] init];
+	[tcv setTitle:NSLocalizedString(@"Toaster", nil)];
+
+	UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:tcv];
+
 	[self setWindow:[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]];
-	[[self window] setRootViewController:[[RAToastViewController alloc] init]];
+	[[self window] setRootViewController:nc];
 	[[self window] makeKeyAndVisible];
 }
 
