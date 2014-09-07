@@ -147,11 +147,6 @@ const RAToastDuration RAToastAnimationDelay = 0.0;
 	// text expand to cover the entire screen.
 	CGPoint position = CGPointMake(RAToastViewMargin, RAToastViewMargin);
 
-	// TODO: Better handling of the fallback gravities.
-	// The default gravity should always be bottom, even if only the right and
-	// left gravity have been defined. The top and center (vertical) have to be
-	// explicitly specified.
-
 	// We only need to adjust the X-position if the screen width is lower than
 	// that of the toast, and the toast gravity do not include left alignment.
 	if ( screen.width > size.width && !( [[self toast] gravity] & RAToastGravityLeft ) ) {
@@ -169,9 +164,6 @@ const RAToastDuration RAToastAnimationDelay = 0.0;
 
 	if ( screen.height > size.height && !( [[self toast] gravity] & RAToastGravityTop ) ) {
 		position.y = round(screen.height - size.height);
-	} else {
-		// TODO: Check if the status bar should be included in the calculations.
-		// I.e. via the controller delegate, related to the edgeRect.
 	}
 
 	[self setFrame:CGRectMake(position.x, position.y, size.width, size.height)];
@@ -200,8 +192,10 @@ const RAToastDuration RAToastAnimationDelay = 0.0;
 	}
 
 	// Subtract the view margin from the available size.
-	width -= RAToastViewMargin;
-	height -= RAToastViewMargin;
+	// Since there always are two sides and the `RAToastViewMargin` only keep
+	// the value for each side we have to multiply it.
+	width -= RAToastViewMargin * 2.0;
+	height -= RAToastViewMargin * 2.0;
 
 	return CGSizeMake(width, height);
 }
@@ -372,8 +366,10 @@ const RAToastDuration RAToastAnimationDelay = 0.0;
 {
 	// Check that the completion handler have been supplied.
 	if ( !completion ) {
-		// TODO: Handle if no completion have been supplied.
-		// Raise an exception? Or, something a bit more subtle.
+		// We have to raise an exception if no completion have been supplied,
+		// otherwise the toast will be locked in place and no way to move on.
+		[NSException raise:@"RAToastInvalidCompletion"
+					format:@"No completion have been supplied for `%s`", __PRETTY_FUNCTION__];
 	}
 
 	// Assign the completion handler to the instance variable. The completion
