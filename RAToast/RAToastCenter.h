@@ -28,6 +28,15 @@
  */
 + (instancetype)defaultCenter;
 
+/**
+ Designated initializer, initialize the center with queue.
+
+ @param queue Queue to use with the toasts.
+
+ @author Tobias Raatiniemi <raatiniemi@gmail.com>
+ */
+- (instancetype)initWithQueue:(NSOperationQueue *)queue;
+
 #pragma mark - Queue
 
 /**

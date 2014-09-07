@@ -51,21 +51,26 @@ static RAToastCenter *_defaultCenter;
 	return _defaultCenter;
 }
 
-- (id)init
+- (instancetype)initWithQueue:(NSOperationQueue *)queue
 {
 	if ( self = [super init] ) {
-		// Initialize the operation queue.
-		[self setQueue:[[NSOperationQueue alloc] init]];
-
-		// Only one toast can be visible at any given time. With multiple toast we can
-		// easily clutter the GUI, especially if the toasts uses different gravities.
-		[[self queue] setMaxConcurrentOperationCount:1];
+		[self setQueue:queue];
 
 		// Hook up the device orientation change notification. The notification first have
 		// to be removed since we don't want the notifications to stack with each center.
 		[[NSNotificationCenter defaultCenter] removeObserver:self];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange:)
 													 name:UIDeviceOrientationDidChangeNotification object:nil];
+	}
+	return self;
+}
+
+- (id)init
+{
+	if ( self = [self initWithQueue:[[NSOperationQueue alloc] init]] ) {
+		// Only one toast can be visible at any given time. With multiple toast we can
+		// easily clutter the GUI, especially if the toasts uses different gravities.
+		[[self queue] setMaxConcurrentOperationCount:1];
 	}
 
 	return self;
