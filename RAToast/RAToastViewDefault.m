@@ -74,8 +74,6 @@
 	width = round(width + horizontal);
 	height = round(height + vertical);
 
-	// TODO: Seems to be a bug with the size when the text overflows the screen.
-
 	return CGSizeMake(width, height);
 }
 
