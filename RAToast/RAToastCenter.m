@@ -75,7 +75,13 @@ static RAToastCenter *_defaultCenter;
 
 - (void)addToast:(RAToastOperation *)toast
 {
-	[[self queue] addOperation:toast];
+	// Verify that the toast operation is valid.
+	if ( toast && [toast isKindOfClass:[RAToastOperation class]] ) {
+		[[self queue] addOperation:toast];
+	} else {
+		// Invalid toast operation have been supplied.
+		RAToastLogError(@"Invalid toast operation given to `%s`", __PRETTY_FUNCTION__);
+	}
 }
 
 #pragma mark - Orientation
@@ -85,24 +91,38 @@ static RAToastCenter *_defaultCenter;
 	// Check that we have toast operations available, no need to relay the
 	// orientation change if no operations are active.
 	if ( [[self queue] operationCount] > 0 ) {
+		// Get the pointer for the method, performance improvement.
+		SEL selector = @selector(isKindOfClass:);
+
+		typedef BOOL (*isClass) (id, SEL, Class);
+		isClass isKindOfClass = (isClass)[self methodForSelector:selector];
+
 		// Retrieve the first operation, i.e. the one that is active now.
 		RAToastOperation *operation = [[[self queue] operations] firstObject];
-		if ( operation ) {
-			if ( [operation isKindOfClass:[RAToastOperation class]] ) {
-				RAToast *toast = [operation toast];
-				if ( toast ) {
-					[[toast view] updateView];
+		if ( operation && isKindOfClass(operation, selector, [RAToastOperation class]) ) {
+			// Verify that the toast is an actual `RAToast`-instance.
+			RAToast *toast = [operation toast];
+			if ( toast && isKindOfClass(toast, selector, [RAToast class]) ) {
+				// Retrieve and validate the view. It has to be a sub-class of
+				// `RAToastView` and respond to the `updateView`-selector.
+				RAToastView *view = [toast view];
+				if ( view && isKindOfClass(view, selector, [RAToastView class]) ) {
+					if ( [view respondsToSelector:@selector(updateView)] ) {
+						[view updateView];
+					} else {
+						RAToastLogError(@"View supplied by toast do not respond to `updateView`");
+					}
 				} else {
-					// TODO: Error log, toast is not available.
+					RAToastLogError(@"Invalid view supplied by the toast");
 				}
 			} else {
-				// TODO: Error log, operation is not correct type.
+				RAToastLogError(@"Toast operation returned invalid toast");
 			}
 		} else {
-			// TODO: Information log, operation is not available.
+			RAToastLogError(@"Toast queue returned invalid toast operation");
 		}
 	} else {
-		// TODO: Information log, operation is not available.
+		RAToastLogDebug(@"No active toast are available for `%s`", __PRETTY_FUNCTION__);
 	}
 }
 
