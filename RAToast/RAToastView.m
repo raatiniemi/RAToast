@@ -10,7 +10,7 @@
 
 const NSInteger RAToastViewMargin = 10.0;
 
-const RAToastDuration RAToastAnimationDuration = 0.8;
+const RAToastDuration RAToastAnimationDuration = 0.6;
 
 const RAToastDuration RAToastAnimationDelay = 0.0;
 
