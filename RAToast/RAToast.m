@@ -12,9 +12,9 @@
 #import "RAToastView.h"
 #import "RAToastViewDefault.h"
 
-const RAToastDuration RAToastDurationShort = 1.0;
-const RAToastDuration RAToastDurationNormal = 2.0;
-const RAToastDuration RAToastDurationLong = 3.0;
+const RAToastDuration RAToastDurationShort = 0.5;
+const RAToastDuration RAToastDurationNormal = 1.0;
+const RAToastDuration RAToastDurationLong = 2.0;
 
 static UIViewController *_delegate;
 
